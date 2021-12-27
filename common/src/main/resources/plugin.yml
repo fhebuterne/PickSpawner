@@ -1,0 +1,11 @@
+name: PickSpawner
+authors: [fabien91]
+version: ${version}
+main: fr.fabienhebuterne.pickspawner.PickSpawner
+depend: [Vault]
+api-version: 1.16
+
+commands:
+   pickspawner:
+     description: commande principal
+     aliases: [picks, ps, pspawner]

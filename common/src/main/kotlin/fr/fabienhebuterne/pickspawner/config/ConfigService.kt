@@ -9,16 +9,19 @@ abstract class ConfigService<T : ConfigType>(
     private val instance: PickSpawner,
     private val fileName: String
 ) {
+    companion object {
+        private const val EXTENSION_FILE = "yml"
+    }
 
-    protected var file: File = File(instance.dataFolder, "$fileName.yml")
-    protected lateinit var obj: T
+    protected var file: File = File(instance.dataFolder, "$fileName.$EXTENSION_FILE")
+    protected lateinit var config: T
     protected val json = Jackson.mapper
 
     fun createAndLoadConfig(copyFromResource: Boolean) {
         if (!file.exists()) {
             file.parentFile.mkdirs()
             if (copyFromResource) {
-                instance.saveResource("$fileName.json", false)
+                instance.saveResource("$fileName.$EXTENSION_FILE", false)
             } else {
                 file.createNewFile()
             }
@@ -28,19 +31,14 @@ abstract class ConfigService<T : ConfigType>(
     }
 
     fun loadConfig() {
-        obj = decodeFromString()
+        config = decodeFromString()
 
-        // TODO : Add method to check missing key/value in current file (compare with resource jar file)
         // We save after load to add missing key if config is updated
         save()
     }
 
     fun getSerialization(): T {
-        return obj
-    }
-
-    fun setSerialization(obj: T) {
-        this.obj = obj
+        return config
     }
 
     private fun save() {
@@ -53,5 +51,5 @@ abstract class ConfigService<T : ConfigType>(
 
     protected abstract fun decodeFromString(): T
 
-    protected fun encodeToString(): String = json.writeValueAsString(obj)
+    protected fun encodeToString(): String = json.writeValueAsString(config)
 }

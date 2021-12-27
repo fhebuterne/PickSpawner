@@ -1,12 +1,13 @@
 plugins {
     kotlin("jvm") version Versions.kotlinJvm
     id("com.github.johnrengelman.shadow") version Versions.shadowJar
+    id("com.jetbrains.exposed.gradle.plugin") version Versions.exposedGradlePlugin
 }
 
-group = "fr.fabienhebuterne"
-version = "1.0.0"
-
 allprojects {
+    group = "fr.fabienhebuterne"
+    version = "1.0.0"
+
     apply(plugin = "kotlin")
 
     repositories {

@@ -1,0 +1,18 @@
+# Debug mode - show much information in logs
+debug: true
+
+# Allow spawner change with an egg
+allowEggSpawnerChange: false
+
+# Spawners stackable in survival gamemode
+spawnersStackable: false
+
+# Allow players break spawners with silktouch pickaxe
+allowPickaxeSilkTouch: false
+
+# Allow players break spawners with special custom pickaxe (Lore, Durability etc...)
+allowPickaxeCustom: true
+
+# When false, when a spawner is break, this option give a PIG spawner
+# When true, give a spawner with the current creature defined on spawner.
+allowKeepCreatureOnSpawnerBreak: true
