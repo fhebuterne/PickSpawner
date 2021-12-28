@@ -1,5 +1,6 @@
 package fr.fabienhebuterne.pickspawner
 
+import fr.fabienhebuterne.pickspawner.commands.CommandsRegistration
 import fr.fabienhebuterne.pickspawner.config.DefaultConfig
 import fr.fabienhebuterne.pickspawner.config.DefaultConfigService
 import fr.fabienhebuterne.pickspawner.config.TranslationConfig
@@ -24,13 +25,14 @@ class PickSpawner : JavaPlugin() {
 
     override fun onEnable() {
         setupEconomy()
-        loadConfig()
-        loadListener()
+        loadConfigs()
+        loadListeners()
+        registerCommands()
     }
 
     override fun onDisable() {}
 
-    private fun loadConfig() {
+    private fun loadConfigs() {
         val defaultConfigService = DefaultConfigService(this)
         defaultConfigService.createAndLoadConfig(true)
         defaultConfig = defaultConfigService.getSerialization()
@@ -40,7 +42,7 @@ class PickSpawner : JavaPlugin() {
         translationConfig = translationConfigService.getSerialization()
     }
 
-    private fun loadListener() {
+    private fun loadListeners() {
         val spawnerItemStackService = SpawnerItemStackService(this)
         registerEvent(
             BlockBreakEvent::class.java,
@@ -61,6 +63,10 @@ class PickSpawner : JavaPlugin() {
             listener,
             this
         )
+    }
+
+    private fun registerCommands() {
+        getCommand("pickspawner")?.setExecutor(CommandsRegistration(this))
     }
 
     private fun setupEconomy(): Boolean {

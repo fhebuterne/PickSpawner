@@ -7,3 +7,6 @@ spawnerDisplayName: "#339CFFSpawner : §6{{entity}}"
 
 # Debug message in log when player break a spawner
 spawnerPlayerBreak: "{{playerPseudo}} just broke a {{entity}} spawner in X: {{x}}, Y: {{y}}, Z: {{z}}"
+
+errors:
+  missingPermission: "&cMissing permission"

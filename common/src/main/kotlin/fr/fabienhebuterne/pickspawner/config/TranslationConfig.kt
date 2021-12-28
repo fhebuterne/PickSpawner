@@ -9,7 +9,8 @@ import java.util.regex.Pattern
 data class TranslationConfig(
     val entity: Map<EntityType, String> = mapOf(),
     val spawnerDisplayName: String,
-    val spawnerPlayerBreak: String
+    val spawnerPlayerBreak: String,
+    val errors: ErrorConfig
 ) : ConfigType {
     fun getEntityOrDefault(entityType: EntityType): String {
         return entity.getOrDefault(entityType, entityType.name).toColorHex()
@@ -53,3 +54,7 @@ data class TranslationConfig(
         }
     }
 }
+
+data class ErrorConfig(
+    val missingPermission: String
+)
