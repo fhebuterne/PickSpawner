@@ -15,7 +15,7 @@ data class DefaultConfig(
     val nameCustomPickaxe: String? = null,
     val materialCustomPickaxe: Material? = Material.IRON_PICKAXE,
     val loreCustomPickaxe: List<String> = listOf(),
-    val restrictCustomPickaxeRepair: Boolean = false,
+    val cancelAnvilRepairCustomPickaxe: Boolean = false,
     val detectLoreInPickaxeToRestrictRepair: String? = null
 ): ConfigType {
     // TODO : Add check with custom NBT tag here

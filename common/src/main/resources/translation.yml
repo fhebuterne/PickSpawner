@@ -14,3 +14,4 @@ spawnerPlayerBreak: "{{playerPseudo}} just broke a {{entity}} spawner in X: {{x}
 
 errors:
   missingPermission: "&cMissing permission"
+  cancelAnvilRepairCustomPickaxe: "§cCan't repair this pickaxe from anvil !"

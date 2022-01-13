@@ -61,5 +61,6 @@ data class TranslationConfig(
 }
 
 data class ErrorConfig(
-    val missingPermission: String
+    val missingPermission: String,
+    val cancelAnvilRepairCustomPickaxe: String
 )
