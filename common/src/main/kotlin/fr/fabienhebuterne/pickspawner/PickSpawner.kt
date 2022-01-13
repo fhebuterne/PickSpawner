@@ -1,21 +1,23 @@
 package fr.fabienhebuterne.pickspawner
 
+import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import fr.fabienhebuterne.pickspawner.commands.CommandsRegistration
 import fr.fabienhebuterne.pickspawner.config.DefaultConfig
 import fr.fabienhebuterne.pickspawner.config.DefaultConfigService
 import fr.fabienhebuterne.pickspawner.config.TranslationConfig
 import fr.fabienhebuterne.pickspawner.config.TranslationConfigService
 import fr.fabienhebuterne.pickspawner.module.BaseListener
+import fr.fabienhebuterne.pickspawner.module.ItemInitService
 import fr.fabienhebuterne.pickspawner.module.breakspawner.BlockBreakEventListener
 import fr.fabienhebuterne.pickspawner.module.breakspawner.CustomPickaxeService
 import fr.fabienhebuterne.pickspawner.module.breakspawner.SilkTouchPickaxeService
 import fr.fabienhebuterne.pickspawner.module.breakspawner.SpawnerItemStackService
+import me.lucko.commodore.CommodoreProvider
 import net.milkbowl.vault.economy.Economy
 import org.bukkit.event.Event
 import org.bukkit.event.EventPriority
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.plugin.java.JavaPlugin
-
 
 class PickSpawner : JavaPlugin() {
 
@@ -26,8 +28,9 @@ class PickSpawner : JavaPlugin() {
     override fun onEnable() {
         setupEconomy()
         loadConfigs()
-        loadListeners()
-        registerCommands()
+        val itemInitService = ItemInitService(this)
+        loadListeners(itemInitService)
+        registerCommands(itemInitService)
     }
 
     override fun onDisable() {}
@@ -42,8 +45,8 @@ class PickSpawner : JavaPlugin() {
         translationConfig = translationConfigService.getSerialization()
     }
 
-    private fun loadListeners() {
-        val spawnerItemStackService = SpawnerItemStackService(this)
+    private fun loadListeners(itemInitService: ItemInitService) {
+        val spawnerItemStackService = SpawnerItemStackService(this, itemInitService)
         registerEvent(
             BlockBreakEvent::class.java,
             BlockBreakEventListener(
@@ -65,8 +68,19 @@ class PickSpawner : JavaPlugin() {
         )
     }
 
-    private fun registerCommands() {
-        getCommand("pickspawner")?.setExecutor(CommandsRegistration(this))
+    private fun registerCommands(itemInitService: ItemInitService) {
+        val baseCommand = "pickspawner"
+        val pickSpawnerBaseCommodore = LiteralArgumentBuilder.literal<String>(baseCommand)
+        val commandsRegistration = CommandsRegistration(this, itemInitService, pickSpawnerBaseCommodore)
+
+        // Register base command
+        val command = getCommand(baseCommand)
+        command?.setExecutor(commandsRegistration)
+
+        // Register commodore
+        val commodoreBuild = commandsRegistration.getCommodoreBuild()
+        val commodore = CommodoreProvider.getCommodore(this)
+        commodore.register(command, commodoreBuild) { commandsRegistration.hasCommodorePermission(it) }
     }
 
     private fun setupEconomy(): Boolean {

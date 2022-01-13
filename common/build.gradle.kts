@@ -1,6 +1,3 @@
-import com.jetbrains.exposed.gradle.plugin.shadowjar.kotlinRelocate
-import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
-
 plugins {
     kotlin("jvm")
     id("com.github.johnrengelman.shadow")
@@ -17,6 +14,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${Versions.jackson}")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformats-text:${Versions.jackson}")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${Versions.jackson}")
+    implementation("me.lucko:commodore:${Versions.commodore}")
 }
 
 tasks.processResources {
@@ -42,9 +40,14 @@ tasks.shadowJar {
     relocate("com.fasterxml", "fr.fabienhebuterne.pickspawner.libs.com.fasterxml")
     relocate("org.intellij", "fr.fabienhebuterne.pickspawner.libs.org.intellij")
     relocate("org.jetbrains.annotations", "fr.fabienhebuterne.pickspawner.libs.org.jetbrains.annotations")
+    relocate("me.lucko.commodore", "fr.fabienhebuterne.pickspawner.libs.me.lucko.commodore")
 
     exclude("DebugProbesKt.bin")
     exclude("module-info.class")
+
+    dependencies {
+        exclude(dependency("com.mojang:brigadier"))
+    }
 
     destinationDirectory.set(file(System.getProperty("outputDir") ?: "$rootDir/build/"))
 }

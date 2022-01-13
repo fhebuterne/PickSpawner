@@ -20,8 +20,8 @@ data class DefaultConfig(
 ): ConfigType {
     // TODO : Add check with custom NBT tag here
     fun isCustomPickaxe(itemStack: ItemStack): Boolean {
-        return itemStack.type == materialCustomPickaxe
-                && loreCustomPickaxe == itemStack.itemMeta?.lore
+        return (itemStack.type == materialCustomPickaxe
+                && loreCustomPickaxe == (itemStack.itemMeta?.lore ?: listOf<String>()))
     }
 }
 

@@ -1,6 +1,12 @@
 entity:
-  PIG: "Cochon"
-  ZOMBIE: "#D584FDZombie"
+  PIG:
+    displayName: "Pig"
+    lore:
+      - "&cTest"
+  ZOMBIE:
+    displayName: "#D584FDZombie"
+    lore:
+      - "&eLore"
 
 # Spawner Display Name
 spawnerDisplayName: "#339CFFSpawner : §6{{entity}}"

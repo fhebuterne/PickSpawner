@@ -23,8 +23,10 @@ class BlockBreakEventListener(
 
         if (blockType == Material.SPAWNER && blockState is CreatureSpawner) {
             keepCreatureOnSpawnerBreak(blockState)
-            silkTouchPickaxeService.breakSpawnerWithSilkTouchPickaxe(event, blockState)
-            customPickaxeService.breakSpawnerWithCustomPickaxe(event, blockState)
+            val isBreakFromSilkTouch = silkTouchPickaxeService.breakSpawnerWithSilkTouchPickaxe(event, blockState)
+            if (!isBreakFromSilkTouch) {
+                customPickaxeService.breakSpawnerWithCustomPickaxe(event, blockState)
+            }
         } else {
             // should cancel event when material is not a spawner with custom pickaxe
             customPickaxeService.cancelEventWhenPickaxeIsUsedOnNonSpawner(event)

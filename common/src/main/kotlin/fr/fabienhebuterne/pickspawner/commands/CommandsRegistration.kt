@@ -1,23 +1,45 @@
 package fr.fabienhebuterne.pickspawner.commands
 
+import com.mojang.brigadier.builder.LiteralArgumentBuilder
+import com.mojang.brigadier.tree.LiteralCommandNode
 import fr.fabienhebuterne.pickspawner.PickSpawner
 import fr.fabienhebuterne.pickspawner.commands.factory.AbstractCommand
 import fr.fabienhebuterne.pickspawner.commands.factory.CommandInfoInit
+import fr.fabienhebuterne.pickspawner.exceptions.CustomException
+import fr.fabienhebuterne.pickspawner.module.ItemInitService
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
+
 typealias CommandName = String
 
-class CommandsRegistration(private val instance: PickSpawner): CommandExecutor {
+class CommandsRegistration(
+    private val instance: PickSpawner,
+    private val itemInitService: ItemInitService,
+    private val pickSpawnerBaseCommodore: LiteralArgumentBuilder<String>
+) : CommandExecutor {
 
     private val commands: MutableMap<CommandName, CommandInfoInit> = mutableMapOf()
 
     init {
         registration(
-            GiveCommand()
+            GiveCommand(instance, itemInitService)
         )
+    }
+
+    fun getCommodoreBuild(): LiteralCommandNode<String>? {
+        return commands
+            .map { it.value }
+            .fold(pickSpawnerBaseCommodore) { acc, commandInfoInit ->
+                acc.then(commandInfoInit.abstractCommand.literalArgumentBuilder)
+            }
+            .build()
+    }
+
+    fun hasCommodorePermission(commandSender: CommandSender): Boolean {
+        return commands.any { entry -> commandSender.hasPermission(entry.value.permission) }
     }
 
     private fun registration(vararg abstractCommand: AbstractCommand) {
@@ -49,26 +71,32 @@ class CommandsRegistration(private val instance: PickSpawner): CommandExecutor {
         }
 
         // we drop first arg because only used to execute sub command
-        val filterArgs = args.drop(0).toTypedArray()
+        val filterArgs = args.drop(1).toTypedArray()
 
-        if (sender is Player) {
-            if (!sender.hasPermission(commandInfoInit.permission)) {
-                sender.sendMessage(instance.translationConfig.errors.missingPermission)
-                return true
+        try {
+            if (sender is Player) {
+                if (!sender.hasPermission(commandInfoInit.permission)) {
+                    sender.sendMessage(instance.translationConfig.errors.missingPermission)
+                    return true
+                }
+
+                abstractCommand.runOnPlayer(
+                    sender, command, label, filterArgs
+                )
+            } else {
+                abstractCommand.runOnOther(
+                    sender, command, label, filterArgs
+                )
             }
-
-            abstractCommand.runOnPlayer(
-                sender, command, label, filterArgs
-            )
-        } else {
-            abstractCommand.runOnOther(
-                sender, command, label, filterArgs
-            )
+        } catch (ignored: CustomException) {
+            // We ignore CustomException because error msg send to player
+            // and don't want to have stacktrace on console
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
 
         return true
     }
-
 
 
 }

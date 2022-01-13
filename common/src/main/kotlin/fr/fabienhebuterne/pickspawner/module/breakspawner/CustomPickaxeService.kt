@@ -25,20 +25,20 @@ class CustomPickaxeService(
             return
         }
 
-        val piocheMeta: ItemMeta? = mainHandItem.itemMeta
+        val pickaxeMeta: ItemMeta? = mainHandItem.itemMeta
         val durability = mainHandItem.durability
-        val resultLore = (249 - durability).toShort()
+        val loreResult = (249 - durability).toShort()
         val loreFinal: MutableList<String> = instance.defaultConfig.loreCustomPickaxe.toMutableList()
-        piocheMeta?.lore = loreFinal
+        pickaxeMeta?.lore = loreFinal
             .filter { it.contains("{{usage}}") }
             .map {
                 it.replace(
                     "\\{\\{usage}}".toRegex(),
-                    resultLore.toString()
+                    loreResult.toString()
                 )
             }
 
-        mainHandItem.itemMeta = piocheMeta
+        mainHandItem.itemMeta = pickaxeMeta
         spawnerItemStackService.breakSpawner(player, event.block.world, event.block.location, creatureSpawner)
     }
 

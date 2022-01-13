@@ -13,13 +13,13 @@ class SilkTouchPickaxeService(
     fun breakSpawnerWithSilkTouchPickaxe(
         event: BlockBreakEvent,
         creatureSpawner: CreatureSpawner
-    ) {
+    ): Boolean {
         if (!instance.defaultConfig.allowPickaxeSilkTouch) {
-            return
+            return false
         }
 
         if (!event.player.inventory.itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
-            return
+            return false
         }
 
         spawnerItemStackService.breakSpawner(
@@ -28,6 +28,8 @@ class SilkTouchPickaxeService(
             event.block.location,
             creatureSpawner
         )
+
+        return true
     }
 
 }

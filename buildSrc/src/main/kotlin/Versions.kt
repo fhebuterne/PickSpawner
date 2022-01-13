@@ -9,4 +9,5 @@ object Versions {
     const val vault = "1.7"
     const val jacoco = "0.8.7"
     const val exposedGradlePlugin = "0.2.1"
+    const val commodore = "1.11"
 }
