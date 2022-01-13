@@ -1,15 +1,13 @@
 entity:
-  PIG:
-    displayName: "Pig"
-    lore:
-      - "&cTest"
-  ZOMBIE:
-    displayName: "#D584FDZombie"
-    lore:
-      - "&eLore"
+  PIG: "Pig"
+  ZOMBIE: "#D584FDZombie"
 
 # Spawner Display Name
 spawnerDisplayName: "#339CFFSpawner : §6{{entity}}"
+
+# Spawner Lore
+spawnerLore:
+  - "&eThis is a spawner lore"
 
 # Debug message in log when player break a spawner
 spawnerPlayerBreak: "{{playerPseudo}} just broke a {{entity}} spawner in X: {{x}}, Y: {{y}}, Z: {{z}}"

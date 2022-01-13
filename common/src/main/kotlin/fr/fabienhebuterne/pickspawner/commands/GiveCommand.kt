@@ -17,7 +17,7 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import java.util.*
 
-const val GIVE_COMMAND_USAGE = "/pickspawner give <player|uuid> <spawner|pickaxe> <entity|pickaxe_type>"
+const val GIVE_COMMAND_USAGE = "/pickspawner give <player|uuid> <spawner|pickaxe> <entity>"
 
 @CommandInfo("give", "pickspawner.give", 2, GIVE_COMMAND_USAGE)
 class GiveCommand(

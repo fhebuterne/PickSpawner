@@ -7,19 +7,20 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 data class TranslationConfig(
-    val entity: Map<EntityType, ItemTranslation> = mapOf(),
+    val entity: Map<EntityType, String> = mapOf(),
     val spawnerDisplayName: String,
+    val spawnerLore: List<String> = listOf(),
     val spawnerPlayerBreak: String,
     val errors: ErrorConfig
 ) : ConfigType {
-    fun getEntityOrDefault(entityType: EntityType): ItemTranslation {
-        return entity.getOrDefault(entityType, ItemTranslation(displayName = entityType.name))
+    fun getEntityOrDefault(entityType: EntityType): String {
+        return entity.getOrDefault(entityType, entityType.name)
     }
 
     fun getSpawnerDisplayName(entityType: EntityType): String {
         return spawnerDisplayName.replace(
             "{{entity}}",
-            getEntityOrDefault(entityType).displayName ?: "missing translation"
+            getEntityOrDefault(entityType)
         ).toColorHex()
     }
 
@@ -30,7 +31,7 @@ data class TranslationConfig(
     ): String {
         return spawnerPlayerBreak
             .replace("{{playerPseudo}}", playerPseudo)
-            .replace("{{entity}}", getEntityOrDefault(entityType).displayName ?: "missing translation")
+            .replace("{{entity}}", getEntityOrDefault(entityType))
             .replace("{{x}}", location.x.toString())
             .replace("{{y}}", location.y.toString())
             .replace("{{z}}", location.z.toString())
@@ -58,11 +59,6 @@ data class TranslationConfig(
         }
     }
 }
-
-data class ItemTranslation(
-    val displayName: String? = null,
-    val lore: List<String> = listOf()
-)
 
 data class ErrorConfig(
     val missingPermission: String

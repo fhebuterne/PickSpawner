@@ -19,7 +19,7 @@ class ItemInitService(private val instance: PickSpawner) {
         blockStateMeta.blockState = blockState
         itemMeta = blockStateMeta
         itemMeta.setDisplayName(instance.translationConfig.getSpawnerDisplayName(entityType))
-        itemMeta.lore = instance.translationConfig.getEntityOrDefault(entityType).lore.map { it.toColorHex() }
+        itemMeta.lore = instance.translationConfig.spawnerLore.map { it.toColorHex() }
         itemStack.itemMeta = itemMeta
         return itemStack
     }
