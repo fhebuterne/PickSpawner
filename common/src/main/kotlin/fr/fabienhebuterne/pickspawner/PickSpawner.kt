@@ -12,12 +12,14 @@ import fr.fabienhebuterne.pickspawner.module.breakspawner.BlockBreakEventListene
 import fr.fabienhebuterne.pickspawner.module.breakspawner.CustomPickaxeService
 import fr.fabienhebuterne.pickspawner.module.breakspawner.SilkTouchPickaxeService
 import fr.fabienhebuterne.pickspawner.module.breakspawner.SpawnerItemStackService
+import fr.fabienhebuterne.pickspawner.module.cancelenchant.EnchantItemEventListener
 import fr.fabienhebuterne.pickspawner.module.cancelrepair.PrepareAnvilEventListener
 import me.lucko.commodore.CommodoreProvider
 import net.milkbowl.vault.economy.Economy
 import org.bukkit.event.Event
 import org.bukkit.event.EventPriority
 import org.bukkit.event.block.BlockBreakEvent
+import org.bukkit.event.enchantment.EnchantItemEvent
 import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -58,6 +60,7 @@ class PickSpawner : JavaPlugin() {
             )
         )
         registerEvent(PrepareAnvilEvent::class.java, PrepareAnvilEventListener(this))
+        registerEvent(EnchantItemEvent::class.java, EnchantItemEventListener(this))
     }
 
     // We need to use registerEvent with more parameters because we use generic abstract class to init try catch

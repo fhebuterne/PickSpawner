@@ -22,7 +22,7 @@ class PrepareAnvilEventListener(
 
         val itemStack = event.inventory.getItem(0) ?: return
         val player = event.view.player as Player
-        if (instance.defaultConfig.isCustomPickaxe(itemStack)) {
+        if (instance.defaultConfig.isCustomPickaxe(itemStack, instance)) {
             event.result = ItemStack(Material.AIR)
             player.sendMessage(instance.translationConfig.errors.cancelAnvilRepairCustomPickaxe)
         }

@@ -32,6 +32,7 @@ data class TranslationConfig(
         return spawnerPlayerBreak
             .replace("{{playerPseudo}}", playerPseudo)
             .replace("{{entity}}", getEntityOrDefault(entityType))
+            .replace("{{world}}", location.world?.name ?: "")
             .replace("{{x}}", location.x.toString())
             .replace("{{y}}", location.y.toString())
             .replace("{{z}}", location.z.toString())
@@ -62,5 +63,6 @@ data class TranslationConfig(
 
 data class ErrorConfig(
     val missingPermission: String,
-    val cancelAnvilRepairCustomPickaxe: String
+    val cancelAnvilRepairCustomPickaxe: String,
+    val cancelAddEnchantmentCustomPickaxe: String
 )

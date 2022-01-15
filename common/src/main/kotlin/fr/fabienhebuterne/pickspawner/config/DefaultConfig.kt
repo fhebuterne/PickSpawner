@@ -1,7 +1,10 @@
 package fr.fabienhebuterne.pickspawner.config
 
+import fr.fabienhebuterne.pickspawner.PickSpawner
 import org.bukkit.Material
+import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack
+import org.bukkit.persistence.PersistentDataType
 
 data class DefaultConfig(
     val debug: Boolean = false,
@@ -18,10 +21,8 @@ data class DefaultConfig(
     val cancelAnvilRepairCustomPickaxe: Boolean = false,
     val detectLoreInPickaxeToRestrictRepair: String? = null
 ): ConfigType {
-    // TODO : Add check with custom NBT tag here
-    fun isCustomPickaxe(itemStack: ItemStack): Boolean {
-        return (itemStack.type == materialCustomPickaxe
-                && loreCustomPickaxe == (itemStack.itemMeta?.lore ?: listOf<String>()))
+    fun isCustomPickaxe(itemStack: ItemStack, instance: PickSpawner): Boolean {
+        return itemStack.itemMeta?.persistentDataContainer?.has(NamespacedKey(instance, "CustomPickaxe"), PersistentDataType.STRING) == true
     }
 }
 

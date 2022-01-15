@@ -3,10 +3,12 @@ package fr.fabienhebuterne.pickspawner.module
 import fr.fabienhebuterne.pickspawner.PickSpawner
 import fr.fabienhebuterne.pickspawner.config.TranslationConfig.Companion.toColorHex
 import org.bukkit.Material
+import org.bukkit.NamespacedKey
 import org.bukkit.block.CreatureSpawner
 import org.bukkit.entity.EntityType
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.BlockStateMeta
+import org.bukkit.persistence.PersistentDataType
 
 class ItemInitService(private val instance: PickSpawner) {
 
@@ -32,6 +34,7 @@ class ItemInitService(private val instance: PickSpawner) {
         val itemMeta = itemStack.itemMeta
         itemMeta?.setDisplayName(instance.defaultConfig.nameCustomPickaxe?.toColorHex())
         itemMeta?.lore = instance.defaultConfig.loreCustomPickaxe.map { it.toColorHex() }
+        itemMeta?.persistentDataContainer?.set(NamespacedKey(instance, "CustomPickaxe"), PersistentDataType.STRING, "true")
         itemStack.itemMeta = itemMeta
         return itemStack
     }

@@ -19,7 +19,7 @@ class CustomPickaxeService(
         val player = event.player
         val mainHandItem: ItemStack = player.inventory.itemInMainHand
 
-        if (!instance.defaultConfig.isCustomPickaxe(mainHandItem)) {
+        if (!instance.defaultConfig.isCustomPickaxe(mainHandItem, instance)) {
             event.isCancelled = true
             player.sendMessage("§8[§e§l!§8] §cCet item ne permet pas de casser les spawners !")
             return
@@ -45,7 +45,7 @@ class CustomPickaxeService(
     fun cancelEventWhenPickaxeIsUsedOnNonSpawner(event: BlockBreakEvent) {
         val mainHandItem: ItemStack = event.player.inventory.itemInMainHand
 
-        if (instance.defaultConfig.isCustomPickaxe(mainHandItem)) {
+        if (instance.defaultConfig.isCustomPickaxe(mainHandItem, instance)) {
             event.isCancelled = true
             event.player.sendMessage("§8[§e§l!§8] §cCette pioche ne peut casser que les spawners !")
             return

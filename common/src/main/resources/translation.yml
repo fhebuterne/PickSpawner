@@ -10,8 +10,9 @@ spawnerLore:
   - "&eThis is a spawner lore"
 
 # Debug message in log when player break a spawner
-spawnerPlayerBreak: "{{playerPseudo}} just broke a {{entity}} spawner in X: {{x}}, Y: {{y}}, Z: {{z}}"
+spawnerPlayerBreak: "{{playerPseudo}} just broke a {{entity}} spawner in world: {{world}}, X: {{x}}, Y: {{y}}, Z: {{z}}"
 
 errors:
   missingPermission: "&cMissing permission"
   cancelAnvilRepairCustomPickaxe: "§cCan't repair this pickaxe from anvil !"
+  cancelAddEnchantmentCustomPickaxe: "§cCan't add enchantment on this pickaxe  !"
