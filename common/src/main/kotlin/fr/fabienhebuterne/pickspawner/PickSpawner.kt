@@ -1,7 +1,7 @@
 package fr.fabienhebuterne.pickspawner
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
-import fr.fabienhebuterne.pickspawner.commands.CommandsRegistration
+import fr.fabienhebuterne.pickspawner.command.CommandsRegistration
 import fr.fabienhebuterne.pickspawner.config.DefaultConfig
 import fr.fabienhebuterne.pickspawner.config.DefaultConfigService
 import fr.fabienhebuterne.pickspawner.config.TranslationConfig

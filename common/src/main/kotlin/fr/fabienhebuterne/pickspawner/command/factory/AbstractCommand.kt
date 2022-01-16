@@ -1,4 +1,4 @@
-package fr.fabienhebuterne.pickspawner.commands.factory
+package fr.fabienhebuterne.pickspawner.command.factory
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import org.bukkit.command.Command

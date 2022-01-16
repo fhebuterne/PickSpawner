@@ -1,13 +1,13 @@
-package fr.fabienhebuterne.pickspawner.commands
+package fr.fabienhebuterne.pickspawner.command
 
 import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import com.mojang.brigadier.builder.RequiredArgumentBuilder
 import fr.fabienhebuterne.pickspawner.PickSpawner
-import fr.fabienhebuterne.pickspawner.commands.factory.AbstractCommand
-import fr.fabienhebuterne.pickspawner.commands.factory.CommandInfo
-import fr.fabienhebuterne.pickspawner.exceptions.BadArgumentException
-import fr.fabienhebuterne.pickspawner.exceptions.PlayerNotFoundException
+import fr.fabienhebuterne.pickspawner.command.factory.AbstractCommand
+import fr.fabienhebuterne.pickspawner.command.factory.CommandInfo
+import fr.fabienhebuterne.pickspawner.exception.BadArgumentException
+import fr.fabienhebuterne.pickspawner.exception.PlayerNotFoundException
 import fr.fabienhebuterne.pickspawner.module.ItemInitService
 import org.bukkit.Bukkit
 import org.bukkit.command.Command

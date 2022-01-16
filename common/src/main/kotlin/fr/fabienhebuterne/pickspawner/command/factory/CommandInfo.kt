@@ -1,4 +1,4 @@
-package fr.fabienhebuterne.pickspawner.commands.factory
+package fr.fabienhebuterne.pickspawner.command.factory
 
 annotation class CommandInfo(
     val name: String,

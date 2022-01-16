@@ -1,11 +1,11 @@
-package fr.fabienhebuterne.pickspawner.commands
+package fr.fabienhebuterne.pickspawner.command
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import com.mojang.brigadier.tree.LiteralCommandNode
 import fr.fabienhebuterne.pickspawner.PickSpawner
-import fr.fabienhebuterne.pickspawner.commands.factory.AbstractCommand
-import fr.fabienhebuterne.pickspawner.commands.factory.CommandInfoInit
-import fr.fabienhebuterne.pickspawner.exceptions.CustomException
+import fr.fabienhebuterne.pickspawner.command.factory.AbstractCommand
+import fr.fabienhebuterne.pickspawner.command.factory.CommandInfoInit
+import fr.fabienhebuterne.pickspawner.exception.CustomException
 import fr.fabienhebuterne.pickspawner.module.ItemInitService
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor

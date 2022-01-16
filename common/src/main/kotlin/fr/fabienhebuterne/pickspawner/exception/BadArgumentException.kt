@@ -1,4 +1,4 @@
-package fr.fabienhebuterne.pickspawner.exceptions
+package fr.fabienhebuterne.pickspawner.exception
 
 import org.bukkit.command.CommandSender
 

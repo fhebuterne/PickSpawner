@@ -1,6 +1,6 @@
 package fr.fabienhebuterne.pickspawner.module
 
-import fr.fabienhebuterne.pickspawner.exceptions.CustomException
+import fr.fabienhebuterne.pickspawner.exception.CustomException
 import org.bukkit.event.Event
 import org.bukkit.event.Listener
 import org.bukkit.plugin.EventExecutor
