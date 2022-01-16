@@ -67,5 +67,6 @@ data class ErrorConfig(
     val missingPermission: String,
     val cancelAnvilRepairCustomPickaxe: String,
     val cancelAddEnchantmentCustomPickaxe: String,
-    val cancelUpdateSpawnerWithEggs: String
+    val cancelUpdateSpawnerWithEggs: String,
+    val cancelDamageEntityCustomPickaxe: String
 )
