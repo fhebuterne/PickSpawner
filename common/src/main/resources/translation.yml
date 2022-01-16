@@ -1,9 +1,9 @@
 entity:
   PIG: "Pig"
-  ZOMBIE: "#D584FDZombie"
+  ZOMBIE: "{#D584FD}Zombie"
 
 # Spawner Display Name
-spawnerDisplayName: "#339CFFSpawner : §6{{entity}}"
+spawnerDisplayName: "{#339CFF}Spawner : §6{{entity}}"
 
 # Spawner Lore
 spawnerLore:
@@ -15,4 +15,5 @@ spawnerPlayerBreak: "{{playerPseudo}} just broke a {{entity}} spawner in world: 
 errors:
   missingPermission: "&cMissing permission"
   cancelAnvilRepairCustomPickaxe: "§cCan't repair this pickaxe from anvil !"
-  cancelAddEnchantmentCustomPickaxe: "§cCan't add enchantment on this pickaxe  !"
+  cancelAddEnchantmentCustomPickaxe: "§cCan't add enchantment on this pickaxe !"
+  cancelUpdateSpawnerWithEggs: "§cUpdating spawner with spawn eggs is disabled !"

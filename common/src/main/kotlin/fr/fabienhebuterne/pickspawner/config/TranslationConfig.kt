@@ -43,11 +43,13 @@ data class TranslationConfig(
         // Work with new hex color code and old color code
         fun String.toColorHex(): String {
             var message = this
-            val pattern: Pattern = Pattern.compile("#[a-fA-F0-9]{6}")
+            val pattern: Pattern = Pattern.compile("\\{#[a-fA-F0-9]{6}}")
             var matcher: Matcher = pattern.matcher(message)
             while (matcher.find()) {
                 val hexCode = message.substring(matcher.start(), matcher.end())
-                val replaceSharp = hexCode.replace('#', 'x')
+                var replaceSharp = hexCode.replace('#', 'x')
+                replaceSharp = replaceSharp.replace("{", "")
+                replaceSharp = replaceSharp.replace("}", "")
                 val ch = replaceSharp.toCharArray()
                 val builder = StringBuilder("")
                 for (c in ch) {
@@ -64,5 +66,6 @@ data class TranslationConfig(
 data class ErrorConfig(
     val missingPermission: String,
     val cancelAnvilRepairCustomPickaxe: String,
-    val cancelAddEnchantmentCustomPickaxe: String
+    val cancelAddEnchantmentCustomPickaxe: String,
+    val cancelUpdateSpawnerWithEggs: String
 )
