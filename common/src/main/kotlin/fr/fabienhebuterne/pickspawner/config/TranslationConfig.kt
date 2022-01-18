@@ -11,7 +11,9 @@ data class TranslationConfig(
     val spawnerDisplayName: String,
     val spawnerLore: List<String> = listOf(),
     val spawnerPlayerBreak: String,
-    val errors: ErrorConfig
+    val errors: ErrorConfig,
+    val reloadInProgress: String,
+    val reloadEnded: String
 ) : ConfigType {
     fun getEntityOrDefault(entityType: EntityType): String {
         return entity.getOrDefault(entityType, entityType.name)

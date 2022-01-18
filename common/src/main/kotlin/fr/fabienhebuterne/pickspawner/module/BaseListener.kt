@@ -3,6 +3,7 @@ package fr.fabienhebuterne.pickspawner.module
 import fr.fabienhebuterne.pickspawner.exception.CustomException
 import org.bukkit.event.Event
 import org.bukkit.event.Listener
+import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.plugin.EventExecutor
 
 abstract class BaseListener<T : Event> : EventExecutor, Listener {

@@ -25,7 +25,8 @@ class CommandsRegistration(
 
     init {
         registration(
-            GiveCommand(instance, itemInitService)
+            GiveCommand(instance, itemInitService),
+            ReloadCommand(instance)
         )
     }
 
@@ -55,7 +56,7 @@ class CommandsRegistration(
         label: String,
         args: Array<out String>
     ): Boolean {
-        if (args.size <= 1) {
+        if (args.isEmpty()) {
             return false
         }
 

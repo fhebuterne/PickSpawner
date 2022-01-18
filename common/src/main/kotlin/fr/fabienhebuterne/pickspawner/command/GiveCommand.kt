@@ -29,19 +29,15 @@ class GiveCommand(
         LiteralArgumentBuilder.literal<String?>("give")
             .then(
                 RequiredArgumentBuilder.argument<String?, String?>("playerNameOrUuid", StringArgumentType.word())
-                    .then(entityTypesToCommodore())
+                    .then(LiteralArgumentBuilder.literal<String>("spawner").entityTypesToCommodore())
                     .then(LiteralArgumentBuilder.literal("pickaxe"))
                     .build()
             )
 
-    private fun entityTypesToCommodore(): LiteralArgumentBuilder<String>? {
-        var spawnerCommodore = LiteralArgumentBuilder.literal<String>("spawner")
-
-        EntityType.values().forEach {
-            spawnerCommodore = spawnerCommodore.then(LiteralArgumentBuilder.literal(it.name))
+    private fun LiteralArgumentBuilder<String>.entityTypesToCommodore(): LiteralArgumentBuilder<String> {
+        return EntityType.values().fold(this) { accumulator, entity ->
+            accumulator.then(LiteralArgumentBuilder.literal(entity.name))
         }
-
-        return spawnerCommodore
     }
 
     override fun runOnPlayer(playerSender: Player, command: Command, label: String, args: Array<out String>) {

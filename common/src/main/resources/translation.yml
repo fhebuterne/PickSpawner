@@ -18,3 +18,7 @@ errors:
   cancelAddEnchantmentCustomPickaxe: "&cCan't add enchantment on this pickaxe !"
   cancelUpdateSpawnerWithEggs: "&cUpdating spawner with spawn eggs is disabled !"
   cancelDamageEntityCustomPickaxe: "&cCan't use this pickaxe to damage entities !"
+
+
+reloadInProgress: "&6Configuration reload in progress..."
+reloadEnded: "&aConfiguration reload ended"

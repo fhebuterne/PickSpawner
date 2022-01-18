@@ -43,7 +43,7 @@ class PickSpawner : JavaPlugin() {
 
     override fun onDisable() {}
 
-    private fun loadConfigs() {
+    fun loadConfigs() {
         val defaultConfigService = DefaultConfigService(this)
         defaultConfigService.createAndLoadConfig(true)
         defaultConfig = defaultConfigService.getSerialization()
