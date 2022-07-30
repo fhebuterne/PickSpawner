@@ -3,7 +3,7 @@ authors: [fabien91]
 version: ${version}
 main: fr.fabienhebuterne.pickspawner.PickSpawner
 depend: [Vault]
-api-version: 1.16
+api-version: 1.18
 
 commands:
    pickspawner:
