@@ -16,8 +16,12 @@ import fr.fabienhebuterne.pickspawner.module.cancelenchant.EnchantItemEventListe
 import fr.fabienhebuterne.pickspawner.module.cancelrepair.PrepareAnvilEventListener
 import fr.fabienhebuterne.pickspawner.module.entitydamage.EntityDamageByEntityEventListener
 import fr.fabienhebuterne.pickspawner.module.interactspawner.PlayerInteractEventListener
+import fr.fabienhebuterne.pickspawner.nms.Utils
+import fr.fabienhebuterne.pickspawner.nms.Utils_1_18_R2
+import fr.fabienhebuterne.pickspawner.nms.Utils_1_19_R1
 import me.lucko.commodore.CommodoreProvider
 import net.milkbowl.vault.economy.Economy
+import org.bukkit.Bukkit
 import org.bukkit.event.Event
 import org.bukkit.event.EventPriority
 import org.bukkit.event.block.BlockBreakEvent
@@ -30,11 +34,13 @@ import org.bukkit.plugin.java.JavaPlugin
 class PickSpawner : JavaPlugin() {
 
     private var economy: Economy? = null
+    lateinit var nms: Utils
     lateinit var defaultConfig: DefaultConfig
     lateinit var translationConfig: TranslationConfig
 
     override fun onEnable() {
         setupEconomy()
+        loadNms()
         loadConfigs()
         val itemInitService = ItemInitService(this)
         loadListeners(itemInitService)
@@ -43,10 +49,39 @@ class PickSpawner : JavaPlugin() {
 
     override fun onDisable() {}
 
+    private fun loadNms() {
+        var currentVersion: String? = null
+        try {
+            currentVersion = Bukkit.getServer().javaClass.getPackage().name.replace(".", ",").split(",".toRegex())
+                .dropLastWhile { it.isEmpty() }
+                .toTypedArray()[3]
+        } catch (_: ArrayIndexOutOfBoundsException) {
+        }
+
+        if (currentVersion == null) {
+            Bukkit.getLogger().severe("Your server version isn't compatible with PickSpawner")
+            server.pluginManager.disablePlugin(this)
+        }
+
+        nms = when (currentVersion) {
+            "v1_18_R2" -> Utils_1_18_R2()
+            "v1_19_R1" -> Utils_1_19_R1()
+            else -> {
+                Bukkit.getLogger().severe("Your server version isn't compatible with PickSpawner")
+                server.pluginManager.disablePlugin(this)
+                throw IllegalStateException("Your server version isn't compatible with PickSpawner")
+            }
+        }
+    }
+
     fun loadConfigs() {
         val defaultConfigService = DefaultConfigService(this)
         defaultConfigService.createAndLoadConfig(true)
         defaultConfig = defaultConfigService.getSerialization()
+
+        if (!defaultConfig.spawnersStackable) {
+            nms.setMaxStackSize(1)
+        }
 
         val translationConfigService = TranslationConfigService(this)
         translationConfigService.createAndLoadConfig(true)

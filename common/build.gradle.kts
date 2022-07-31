@@ -15,6 +15,10 @@ dependencies {
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformats-text:${Versions.jackson}")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${Versions.jackson}")
     implementation("me.lucko:commodore:${Versions.commodore}")
+
+    implementation(project(":nms:interfaces"))
+    implementation(project(":nms:v1_18_R2"))
+    implementation(project(":nms:v1_19_R1"))
 }
 
 tasks.processResources {
