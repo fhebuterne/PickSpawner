@@ -2,10 +2,7 @@ package fr.fabienhebuterne.pickspawner
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import fr.fabienhebuterne.pickspawner.command.CommandsRegistration
-import fr.fabienhebuterne.pickspawner.config.DefaultConfig
-import fr.fabienhebuterne.pickspawner.config.DefaultConfigService
-import fr.fabienhebuterne.pickspawner.config.TranslationConfig
-import fr.fabienhebuterne.pickspawner.config.TranslationConfigService
+import fr.fabienhebuterne.pickspawner.config.*
 import fr.fabienhebuterne.pickspawner.module.BaseListener
 import fr.fabienhebuterne.pickspawner.module.ItemInitService
 import fr.fabienhebuterne.pickspawner.module.breakspawner.BlockBreakEventListener
@@ -16,6 +13,7 @@ import fr.fabienhebuterne.pickspawner.module.cancelenchant.EnchantItemEventListe
 import fr.fabienhebuterne.pickspawner.module.cancelrepair.PrepareAnvilEventListener
 import fr.fabienhebuterne.pickspawner.module.entitydamage.EntityDamageByEntityEventListener
 import fr.fabienhebuterne.pickspawner.module.interactspawner.PlayerInteractEventListener
+import fr.fabienhebuterne.pickspawner.module.pickaxeMigration.PickaxeMigrationPlayerInteractEventListener
 import fr.fabienhebuterne.pickspawner.nms.Utils
 import fr.fabienhebuterne.pickspawner.nms.Utils_1_18_R2
 import fr.fabienhebuterne.pickspawner.nms.Utils_1_19_R1
@@ -37,6 +35,7 @@ class PickSpawner : JavaPlugin() {
     lateinit var nms: Utils
     lateinit var defaultConfig: DefaultConfig
     lateinit var translationConfig: TranslationConfig
+    lateinit var migrationPickaxeConfig: MigrationPickaxeConfig
 
     override fun onEnable() {
         setupEconomy()
@@ -86,6 +85,9 @@ class PickSpawner : JavaPlugin() {
         val translationConfigService = TranslationConfigService(this)
         translationConfigService.createAndLoadConfig(true)
         translationConfig = translationConfigService.getSerialization()
+
+        val migrationPickaxeConfigService = MigrationPickaxeConfigService(this)
+        migrationPickaxeConfig = migrationPickaxeConfigService.loadAndFindConfigIfExist() ?: MigrationPickaxeConfig()
     }
 
     private fun loadListeners(itemInitService: ItemInitService) {
@@ -102,6 +104,7 @@ class PickSpawner : JavaPlugin() {
         registerEvent(EnchantItemEvent::class.java, EnchantItemEventListener(this))
         registerEvent(PlayerInteractEvent::class.java, PlayerInteractEventListener(this))
         registerEvent(EntityDamageByEntityEvent::class.java, EntityDamageByEntityEventListener(this))
+        registerEvent(PlayerInteractEvent::class.java, PickaxeMigrationPlayerInteractEventListener(this))
     }
 
     // We need to use registerEvent with more parameters because we use generic abstract class to init try catch

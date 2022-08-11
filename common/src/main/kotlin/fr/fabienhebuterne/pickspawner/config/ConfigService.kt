@@ -30,6 +30,14 @@ abstract class ConfigService<T : ConfigType>(
         loadConfig()
     }
 
+    fun loadAndFindConfigIfExist(): T? {
+        if (file.exists()) {
+            loadConfig()
+            return config
+        }
+        return null
+    }
+
     fun loadConfig() {
         config = decodeFromString()
 
