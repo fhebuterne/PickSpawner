@@ -3,9 +3,9 @@ package fr.fabienhebuterne.pickspawner.module
 import fr.fabienhebuterne.pickspawner.exception.CustomException
 import org.bukkit.event.Event
 import org.bukkit.event.Listener
-import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.plugin.EventExecutor
 
+@Suppress("UNCHECKED_CAST")
 abstract class BaseListener<T : Event> : EventExecutor, Listener {
 
     override fun execute(listener: Listener, event: Event) {

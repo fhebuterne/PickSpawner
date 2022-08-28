@@ -1,8 +1,9 @@
 plugins {
     kotlin("jvm")
     id("com.github.johnrengelman.shadow")
-    id("com.jetbrains.exposed.gradle.plugin")
 }
+
+configurations["testImplementation"].extendsFrom(configurations["compileOnly"])
 
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT")
@@ -31,7 +32,7 @@ tasks.processResources {
 val buildVersion: String? by project
 
 tasks.shadowJar {
-    mergeServiceFiles()
+    //mergeServiceFiles()
 
     if (buildVersion == null) {
         archiveFileName.set("PickSpawner-${archiveVersion.getOrElse("unknown")}.jar")
@@ -40,12 +41,12 @@ tasks.shadowJar {
         archiveFileName.set("PickSpawner.jar")
     }
 
-    relocate("org.yaml", "fr.fabienhebuterne.pickspawner.libs.org.yaml")
+    /*relocate("org.yaml", "fr.fabienhebuterne.pickspawner.libs.org.yaml")
     relocate("com.fasterxml", "fr.fabienhebuterne.pickspawner.libs.com.fasterxml")
     relocate("org.intellij", "fr.fabienhebuterne.pickspawner.libs.org.intellij")
     relocate("org.jetbrains.annotations", "fr.fabienhebuterne.pickspawner.libs.org.jetbrains.annotations")
     relocate("me.lucko.commodore", "fr.fabienhebuterne.pickspawner.libs.me.lucko.commodore")
-
+*/
     exclude("DebugProbesKt.bin")
     exclude("module-info.class")
 
@@ -58,4 +59,8 @@ tasks.shadowJar {
 
 tasks.build {
     dependsOn("shadowJar")
+}
+
+tasks.test {
+    useJUnitPlatform()
 }

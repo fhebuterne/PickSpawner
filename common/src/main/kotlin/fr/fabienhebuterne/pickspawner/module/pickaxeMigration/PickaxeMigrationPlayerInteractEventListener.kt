@@ -3,18 +3,24 @@ package fr.fabienhebuterne.pickspawner.module.pickaxeMigration
 import fr.fabienhebuterne.pickspawner.PickSpawner
 import fr.fabienhebuterne.pickspawner.config.TranslationConfig.Companion.toColorHex
 import fr.fabienhebuterne.pickspawner.module.BaseListener
+import fr.fabienhebuterne.pickspawner.module.ItemInitService
 import org.bukkit.Bukkit
 import org.bukkit.Material
+import org.bukkit.NamespacedKey
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.inventory.meta.Damageable
+import org.bukkit.persistence.PersistentDataType
 
-class PickaxeMigrationPlayerInteractEventListener(private val instance: PickSpawner) :
+class PickaxeMigrationPlayerInteractEventListener(
+    private val instance: PickSpawner,
+    private val itemInitService: ItemInitService
+) :
     BaseListener<PlayerInteractEvent>() {
     override fun execute(event: PlayerInteractEvent) {
         migrationFromOldToNewPickaxe(event)
     }
 
-    // TODO : CHECK if pickaxe is not NEW pickaxe by checking tag
     private fun migrationFromOldToNewPickaxe(event: PlayerInteractEvent) {
         if (!instance.migrationPickaxeConfig.enabled) {
             return
@@ -22,7 +28,13 @@ class PickaxeMigrationPlayerInteractEventListener(private val instance: PickSpaw
 
         val item = event.item
 
-        if (item?.hasItemMeta() == false) {
+        if (item?.hasItemMeta() == false || item?.itemMeta?.persistentDataContainer?.has(
+                NamespacedKey(
+                    instance,
+                    "CustomPickaxe"
+                ), PersistentDataType.STRING
+            ) == true
+        ) {
             return
         }
 
@@ -42,8 +54,11 @@ class PickaxeMigrationPlayerInteractEventListener(private val instance: PickSpaw
             }
 
             if (instance.migrationPickaxeConfig.pickaxeName == itemMeta?.displayName && instance.migrationPickaxeConfig.pickaxeLore == itemLore) {
-                // Should migrate this pickaxe
                 Bukkit.getLogger().info { "Migration OLD pickaxe for player ${event.player.uniqueId} to NEW pickaxe" }
+                val damage = (itemMeta as Damageable).damage
+                event.player.inventory.remove(item)
+                event.player.inventory.addItem(itemInitService.initCustomPickaxeItemStack(damage))
+                event.player.sendMessage("Votre pioche vient d'être mise à jour !")
             }
         }
 

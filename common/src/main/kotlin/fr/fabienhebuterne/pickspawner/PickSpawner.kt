@@ -5,10 +5,7 @@ import fr.fabienhebuterne.pickspawner.command.CommandsRegistration
 import fr.fabienhebuterne.pickspawner.config.*
 import fr.fabienhebuterne.pickspawner.module.BaseListener
 import fr.fabienhebuterne.pickspawner.module.ItemInitService
-import fr.fabienhebuterne.pickspawner.module.breakspawner.BlockBreakEventListener
-import fr.fabienhebuterne.pickspawner.module.breakspawner.CustomPickaxeService
-import fr.fabienhebuterne.pickspawner.module.breakspawner.SilkTouchPickaxeService
-import fr.fabienhebuterne.pickspawner.module.breakspawner.SpawnerItemStackService
+import fr.fabienhebuterne.pickspawner.module.breakspawner.*
 import fr.fabienhebuterne.pickspawner.module.cancelenchant.EnchantItemEventListener
 import fr.fabienhebuterne.pickspawner.module.cancelrepair.PrepareAnvilEventListener
 import fr.fabienhebuterne.pickspawner.module.entitydamage.EntityDamageByEntityEventListener
@@ -27,6 +24,7 @@ import org.bukkit.event.enchantment.EnchantItemEvent
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.event.player.PlayerItemDamageEvent
 import org.bukkit.plugin.java.JavaPlugin
 
 class PickSpawner : JavaPlugin() {
@@ -49,14 +47,12 @@ class PickSpawner : JavaPlugin() {
     override fun onDisable() {}
 
     private fun loadNms() {
-        var currentVersion: String? = null
-        try {
-            currentVersion = Bukkit.getServer().javaClass.getPackage().name.replace(".", ",").split(",".toRegex())
+        val currentVersion: String? =
+            Bukkit.getServer().javaClass.getPackage().name.replace(".", ",").split(",".toRegex())
                 .dropLastWhile { it.isEmpty() }
-                .toTypedArray()[3]
-        } catch (_: ArrayIndexOutOfBoundsException) {
-        }
-
+                .toTypedArray()
+                .getOrNull(3)
+        
         if (currentVersion == null) {
             Bukkit.getLogger().severe("Your server version isn't compatible with PickSpawner")
             server.pluginManager.disablePlugin(this)
@@ -104,7 +100,14 @@ class PickSpawner : JavaPlugin() {
         registerEvent(EnchantItemEvent::class.java, EnchantItemEventListener(this))
         registerEvent(PlayerInteractEvent::class.java, PlayerInteractEventListener(this))
         registerEvent(EntityDamageByEntityEvent::class.java, EntityDamageByEntityEventListener(this))
-        registerEvent(PlayerInteractEvent::class.java, PickaxeMigrationPlayerInteractEventListener(this))
+        registerEvent(
+            PlayerInteractEvent::class.java,
+            PickaxeMigrationPlayerInteractEventListener(this, itemInitService)
+        )
+        registerEvent(
+            PlayerItemDamageEvent::class.java,
+            PlayerItemDamageListener(this, itemInitService)
+        )
     }
 
     // We need to use registerEvent with more parameters because we use generic abstract class to init try catch

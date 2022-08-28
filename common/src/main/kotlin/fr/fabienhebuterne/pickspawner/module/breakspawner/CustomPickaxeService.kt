@@ -1,10 +1,10 @@
 package fr.fabienhebuterne.pickspawner.module.breakspawner
 
 import fr.fabienhebuterne.pickspawner.PickSpawner
+import fr.fabienhebuterne.pickspawner.module.ItemInitService
 import org.bukkit.block.CreatureSpawner
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.meta.ItemMeta
 
 class CustomPickaxeService(
     private val instance: PickSpawner,
@@ -25,20 +25,6 @@ class CustomPickaxeService(
             return
         }
 
-        val pickaxeMeta: ItemMeta? = mainHandItem.itemMeta
-        val durability = mainHandItem.durability
-        val loreResult = (249 - durability).toShort()
-        val loreFinal: MutableList<String> = instance.defaultConfig.loreCustomPickaxe.toMutableList()
-        pickaxeMeta?.lore = loreFinal
-            .filter { it.contains("{{usage}}") }
-            .map {
-                it.replace(
-                    "\\{\\{usage}}".toRegex(),
-                    loreResult.toString()
-                )
-            }
-
-        mainHandItem.itemMeta = pickaxeMeta
         spawnerItemStackService.breakSpawner(player, event.block.world, event.block.location, creatureSpawner)
     }
 

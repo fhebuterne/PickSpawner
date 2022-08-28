@@ -1,7 +1,6 @@
 plugins {
     kotlin("jvm") version Versions.kotlinJvm
     id("com.github.johnrengelman.shadow") version Versions.shadowJar
-    id("com.jetbrains.exposed.gradle.plugin") version Versions.exposedGradlePlugin
 }
 
 allprojects {

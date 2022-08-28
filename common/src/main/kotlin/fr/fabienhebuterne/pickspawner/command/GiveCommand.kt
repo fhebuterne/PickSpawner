@@ -30,7 +30,9 @@ class GiveCommand(
             .then(
                 RequiredArgumentBuilder.argument<String?, String?>("playerNameOrUuid", StringArgumentType.word())
                     .then(LiteralArgumentBuilder.literal<String>("spawner").entityTypesToCommodore())
-                    .then(LiteralArgumentBuilder.literal("pickaxe"))
+                    .then(LiteralArgumentBuilder.literal<String?>("pickaxe").then(
+                        LiteralArgumentBuilder.literal("durability")
+                    ))
                     .build()
             )
 
@@ -61,7 +63,8 @@ class GiveCommand(
                 showAddItemResult(result, player, commandSender, entityType)
             }
             "PICKAXE" -> {
-                val result = player.inventory.addItem(itemInitService.initCustomPickaxeItemStack())
+                val damage = args.getOrNull(2)?.toIntOrNull() ?: 0
+                val result = player.inventory.addItem(itemInitService.initCustomPickaxeItemStack(damage))
                 showAddItemResult(result, player, commandSender)
             }
             else -> throw BadArgumentException(commandSender, GIVE_COMMAND_USAGE)
