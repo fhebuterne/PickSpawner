@@ -19,6 +19,7 @@ data class DefaultConfig(
     val materialCustomPickaxe: Material? = Material.IRON_PICKAXE,
     val loreCustomPickaxe: List<String> = listOf(),
     val cancelAnvilRepairCustomPickaxe: Boolean = false,
+    val cancelRepairFromCmiCommand: Boolean = false,
     val detectLoreInPickaxeToRestrictRepair: String? = null
 ): ConfigType {
     fun isCustomPickaxe(itemStack: ItemStack, instance: PickSpawner): Boolean {

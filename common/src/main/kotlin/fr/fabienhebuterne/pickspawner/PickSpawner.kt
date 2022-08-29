@@ -7,6 +7,7 @@ import fr.fabienhebuterne.pickspawner.module.BaseListener
 import fr.fabienhebuterne.pickspawner.module.ItemInitService
 import fr.fabienhebuterne.pickspawner.module.breakspawner.*
 import fr.fabienhebuterne.pickspawner.module.cancelenchant.EnchantItemEventListener
+import fr.fabienhebuterne.pickspawner.module.cancelrepair.PlayerCommandPreprocessListener
 import fr.fabienhebuterne.pickspawner.module.cancelrepair.PrepareAnvilEventListener
 import fr.fabienhebuterne.pickspawner.module.entitydamage.EntityDamageByEntityEventListener
 import fr.fabienhebuterne.pickspawner.module.interactspawner.PlayerInteractEventListener
@@ -23,6 +24,7 @@ import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.enchantment.EnchantItemEvent
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.inventory.PrepareAnvilEvent
+import org.bukkit.event.player.PlayerCommandPreprocessEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerItemDamageEvent
 import org.bukkit.plugin.java.JavaPlugin
@@ -52,7 +54,7 @@ class PickSpawner : JavaPlugin() {
                 .dropLastWhile { it.isEmpty() }
                 .toTypedArray()
                 .getOrNull(3)
-        
+
         if (currentVersion == null) {
             Bukkit.getLogger().severe("Your server version isn't compatible with PickSpawner")
             server.pluginManager.disablePlugin(this)
@@ -107,6 +109,10 @@ class PickSpawner : JavaPlugin() {
         registerEvent(
             PlayerItemDamageEvent::class.java,
             PlayerItemDamageListener(this, itemInitService)
+        )
+        registerEvent(
+            PlayerCommandPreprocessEvent::class.java,
+            PlayerCommandPreprocessListener(this)
         )
     }
 
