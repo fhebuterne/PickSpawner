@@ -54,11 +54,11 @@ class PickaxeMigrationPlayerInteractEventListener(
             }
 
             if (instance.migrationPickaxeConfig.pickaxeName == itemMeta?.displayName && instance.migrationPickaxeConfig.pickaxeLore == itemLore) {
-                Bukkit.getLogger().info { "Migration OLD pickaxe for player ${event.player.uniqueId} to NEW pickaxe" }
+                Bukkit.getLogger().info { "[PickSpawner] Migration OLD pickaxe for player ${event.player.uniqueId} to NEW pickaxe" }
                 val damage = (itemMeta as Damageable).damage
                 event.player.inventory.remove(item)
                 event.player.inventory.addItem(itemInitService.initCustomPickaxeItemStack(damage))
-                event.player.sendMessage("Votre pioche vient d'être mise à jour !")
+                event.player.sendMessage(instance.translationConfig.pickaxeHasBeenMigrated.toColorHex())
             }
         }
 

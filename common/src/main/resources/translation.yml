@@ -10,15 +10,18 @@ spawnerLore:
   - "&eThis is a spawner lore"
 
 # Debug message in log when player break a spawner
-spawnerPlayerBreak: "{{playerPseudo}} just broke a {{entity}} spawner in world: {{world}}, X: {{x}}, Y: {{y}}, Z: {{z}}"
+spawnerPlayerBreak: "&8[&e&lPickSpawner&8] {{playerPseudo}} just broke a {{entity}} spawner in world: {{world}}, X: {{x}}, Y: {{y}}, Z: {{z}}"
 
 errors:
-  missingPermission: "&cMissing permission"
-  cancelAnvilRepairCustomPickaxe: "&cCan't repair this pickaxe from anvil !"
-  cancelAddEnchantmentCustomPickaxe: "&cCan't add enchantment on this pickaxe !"
-  cancelUpdateSpawnerWithEggs: "&cUpdating spawner with spawn eggs is disabled !"
-  cancelDamageEntityCustomPickaxe: "&cCan't use this pickaxe to damage entities !"
+  missingPermission: "&8[&e&lPickSpawner&8] &cMissing permission"
+  cancelAnvilRepairCustomPickaxe: "&8[&e&lPickSpawner&8] &cCan't repair this pickaxe from anvil !"
+  cancelAddEnchantmentCustomPickaxe: "&8[&e&lPickSpawner&8] &cCan't add enchantment on this pickaxe !"
+  cancelUpdateSpawnerWithEggs: "&8[&e&lPickSpawner&8] &cUpdating spawner with spawn eggs is disabled !"
+  cancelDamageEntityCustomPickaxe: "&8[&e&lPickSpawner&8] &cCan't use this pickaxe to damage entities !"
+  cancelRepairFromCommand: "&8[&e&lPickSpawner&8] &cCan't repair this pickaxe with this command !"
+  itemCannotBreakSpawner: "&8[&e&lPickSpawner&8] &cThis item cannot broke this spawner !"
+  pickaxeBreakOnlySpawner: "&8[&e&lPickSpawner&8] &cThis pickaxe can only break spawners !"
 
-
-reloadInProgress: "&6Configuration reload in progress..."
-reloadEnded: "&aConfiguration reload ended"
+reloadInProgress: "&8[&e&lPickSpawner&8] &6Configuration reload in progress..."
+reloadEnded: "&8[&e&lPickSpawner&8] &aConfiguration reload ended"
+pickaxeHasBeenMigrated: "&8[&e&lPickSpawner&8] &aYour pickaxe has been updated !"

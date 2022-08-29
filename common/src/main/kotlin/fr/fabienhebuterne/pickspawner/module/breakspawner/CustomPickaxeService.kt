@@ -1,6 +1,7 @@
 package fr.fabienhebuterne.pickspawner.module.breakspawner
 
 import fr.fabienhebuterne.pickspawner.PickSpawner
+import fr.fabienhebuterne.pickspawner.config.TranslationConfig.Companion.toColorHex
 import fr.fabienhebuterne.pickspawner.module.ItemInitService
 import org.bukkit.block.CreatureSpawner
 import org.bukkit.event.block.BlockBreakEvent
@@ -21,7 +22,7 @@ class CustomPickaxeService(
 
         if (!instance.defaultConfig.isCustomPickaxe(mainHandItem, instance)) {
             event.isCancelled = true
-            player.sendMessage("§8[§e§l!§8] §cCet item ne permet pas de casser les spawners !")
+            player.sendMessage(instance.translationConfig.errors.itemCannotBreakSpawner.toColorHex())
             return
         }
 
@@ -33,7 +34,7 @@ class CustomPickaxeService(
 
         if (instance.defaultConfig.isCustomPickaxe(mainHandItem, instance)) {
             event.isCancelled = true
-            event.player.sendMessage("§8[§e§l!§8] §cCette pioche ne peut casser que les spawners !")
+            event.player.sendMessage(instance.translationConfig.errors.pickaxeBreakOnlySpawner.toColorHex())
             return
         }
     }

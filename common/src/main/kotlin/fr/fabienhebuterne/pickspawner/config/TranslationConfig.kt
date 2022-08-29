@@ -13,7 +13,8 @@ data class TranslationConfig(
     val spawnerPlayerBreak: String,
     val errors: ErrorConfig,
     val reloadInProgress: String,
-    val reloadEnded: String
+    val reloadEnded: String,
+    val pickaxeHasBeenMigrated: String
 ) : ConfigType {
     fun getEntityOrDefault(entityType: EntityType): String {
         return entity.getOrDefault(entityType, entityType.name)
@@ -70,5 +71,8 @@ data class ErrorConfig(
     val cancelAnvilRepairCustomPickaxe: String,
     val cancelAddEnchantmentCustomPickaxe: String,
     val cancelUpdateSpawnerWithEggs: String,
-    val cancelDamageEntityCustomPickaxe: String
+    val cancelDamageEntityCustomPickaxe: String,
+    val cancelRepairFromCommand: String,
+    val itemCannotBreakSpawner: String,
+    val pickaxeBreakOnlySpawner: String
 )

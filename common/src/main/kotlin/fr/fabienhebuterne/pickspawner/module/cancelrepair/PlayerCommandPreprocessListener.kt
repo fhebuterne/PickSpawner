@@ -1,6 +1,7 @@
 package fr.fabienhebuterne.pickspawner.module.cancelrepair
 
 import fr.fabienhebuterne.pickspawner.PickSpawner
+import fr.fabienhebuterne.pickspawner.config.TranslationConfig.Companion.toColorHex
 import fr.fabienhebuterne.pickspawner.module.BaseListener
 import org.bukkit.event.player.PlayerCommandPreprocessEvent
 import org.bukkit.inventory.ItemStack
@@ -31,7 +32,7 @@ class PlayerCommandPreprocessListener(
         if (instance.defaultConfig.isCustomPickaxe(hand, instance)
             || instance.migrationPickaxeConfig.isOlderCustomPickaxe(hand, instance)
         ) {
-            e.player.sendMessage("§cVous ne pouvez pas réparer la pioche à spawner !")
+            e.player.sendMessage(instance.translationConfig.errors.cancelRepairFromCommand.toColorHex())
             e.isCancelled = true
         }
     }
