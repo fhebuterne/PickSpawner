@@ -21,7 +21,6 @@ const val GIVE_COMMAND_USAGE = "/pickspawner give <player|uuid> <spawner|pickaxe
 
 @CommandInfo("give", "pickspawner.give", 2, GIVE_COMMAND_USAGE)
 class GiveCommand(
-    private val instance: PickSpawner,
     private val itemInitService: ItemInitService
 ) : AbstractCommand() {
 
@@ -30,9 +29,11 @@ class GiveCommand(
             .then(
                 RequiredArgumentBuilder.argument<String?, String?>("playerNameOrUuid", StringArgumentType.word())
                     .then(LiteralArgumentBuilder.literal<String>("spawner").entityTypesToCommodore())
-                    .then(LiteralArgumentBuilder.literal<String?>("custom_pickaxe").then(
-                        LiteralArgumentBuilder.literal("damage")
-                    ))
+                    .then(
+                        LiteralArgumentBuilder.literal<String?>("custom_pickaxe").then(
+                            LiteralArgumentBuilder.literal("damage")
+                        )
+                    )
                     .build()
             )
 
@@ -57,18 +58,30 @@ class GiveCommand(
             ?: throw PlayerNotFoundException(commandSender, playerNameOrUuid)
 
         when (args[1].uppercase()) {
-            "SPAWNER" -> {
-                val entityType = EntityType.valueOf(args[2].uppercase())
-                val result = player.inventory.addItem(itemInitService.initSpawnerItemStack(entityType))
-                showAddItemResult(result, player, commandSender, entityType)
-            }
-            "CUSTOM_PICKAXE" -> {
-                val damage = args.getOrNull(2)?.toIntOrNull() ?: 0
-                val result = player.inventory.addItem(itemInitService.initCustomPickaxeItemStack(damage))
-                showAddItemResult(result, player, commandSender)
-            }
+            "SPAWNER" -> giveSpawner(args, player, commandSender)
+            "CUSTOM_PICKAXE" -> giveCustomPickaxe(args, player, commandSender)
             else -> throw BadArgumentException(commandSender, GIVE_COMMAND_USAGE)
         }
+    }
+
+    private fun giveCustomPickaxe(
+        args: Array<out String>,
+        player: Player,
+        commandSender: CommandSender
+    ) {
+        val damage = args.getOrNull(2)?.toIntOrNull() ?: 0
+        val result = player.inventory.addItem(itemInitService.initCustomPickaxeItemStack(damage))
+        showAddItemResult(result, player, commandSender)
+    }
+
+    private fun giveSpawner(
+        args: Array<out String>,
+        player: Player,
+        commandSender: CommandSender
+    ) {
+        val entityType = EntityType.valueOf(args[2].uppercase())
+        val result = player.inventory.addItem(itemInitService.initSpawnerItemStack(entityType))
+        showAddItemResult(result, player, commandSender, entityType)
     }
 
     private fun showAddItemResult(

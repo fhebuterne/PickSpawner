@@ -17,7 +17,7 @@ typealias CommandName = String
 
 class CommandsRegistration(
     private val instance: PickSpawner,
-    private val itemInitService: ItemInitService,
+    itemInitService: ItemInitService,
     private val pickSpawnerBaseCommodore: LiteralArgumentBuilder<String>
 ) : CommandExecutor {
 
@@ -25,7 +25,7 @@ class CommandsRegistration(
 
     init {
         registration(
-            GiveCommand(instance, itemInitService),
+            GiveCommand(itemInitService),
             ReloadCommand(instance)
         )
     }
