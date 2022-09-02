@@ -100,7 +100,7 @@ class PickSpawner : JavaPlugin() {
         )
         registerEvent(PrepareAnvilEvent::class.java, PrepareAnvilEventListener(this))
         registerEvent(EnchantItemEvent::class.java, EnchantItemEventListener(this))
-        registerEvent(PlayerInteractEvent::class.java, PlayerInteractEventListener(this))
+        registerEvent(PlayerInteractEvent::class.java, PlayerInteractEventListener(this, itemInitService))
         registerEvent(EntityDamageByEntityEvent::class.java, EntityDamageByEntityEventListener(this))
         registerEvent(
             PlayerInteractEvent::class.java,
