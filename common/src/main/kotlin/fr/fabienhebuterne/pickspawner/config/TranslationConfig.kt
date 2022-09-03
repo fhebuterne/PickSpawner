@@ -14,7 +14,9 @@ data class TranslationConfig(
     val errors: ErrorConfig,
     val reloadInProgress: String,
     val reloadEnded: String,
-    val pickaxeHasBeenMigrated: String
+    val pickaxeHasBeenMigrated: String,
+    val buyCustomPickaxe: String,
+    val buyCustomPickaxeDurability: String
 ) : ConfigType {
     fun getEntityOrDefault(entityType: EntityType): String {
         return entity.getOrDefault(entityType, entityType.name)
@@ -74,5 +76,10 @@ data class ErrorConfig(
     val cancelDamageEntityCustomPickaxe: String,
     val cancelRepairFromCommand: String,
     val itemCannotBreakSpawner: String,
-    val pickaxeBreakOnlySpawner: String
+    val pickaxeBreakOnlySpawner: String,
+    val missingPlaceInventoryBuyCancelled: String,
+    val missingMoneyToBuy: String,
+    val missingItemToBuy: String,
+    val cancelBuyDurabilityMissingCustomPickaxeInMainHand: String,
+    val cancelBuyDurabilityExceedMaxDurability: String
 )

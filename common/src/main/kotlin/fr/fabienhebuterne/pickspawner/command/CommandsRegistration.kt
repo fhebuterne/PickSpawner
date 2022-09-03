@@ -25,6 +25,7 @@ class CommandsRegistration(
 
     init {
         registration(
+            BuyCommand(instance, itemInitService),
             GiveCommand(itemInitService),
             ReloadCommand(instance)
         )

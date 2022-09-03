@@ -34,6 +34,6 @@ enum class EconomyType {
 data class Price(
     val economyType: EconomyType = EconomyType.MONEY,
     val price: Long? = 100000,
-    val quantity: Int? = 1,
+    val quantity: Int = 1,
     val materialName: Material? = null
 )

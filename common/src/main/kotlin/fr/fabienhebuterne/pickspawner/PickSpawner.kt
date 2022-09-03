@@ -154,5 +154,9 @@ class PickSpawner : JavaPlugin() {
         return economy != null
     }
 
+    public fun getEconomy(): Economy {
+        return economy ?: throw IllegalStateException("Economy isn't available")
+    }
+
 
 }
