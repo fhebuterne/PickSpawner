@@ -32,8 +32,6 @@ tasks.processResources {
 val buildVersion: String? by project
 
 tasks.shadowJar {
-    //mergeServiceFiles()
-
     if (buildVersion == null) {
         archiveFileName.set("PickSpawner-${archiveVersion.getOrElse("unknown")}.jar")
     } else {
@@ -41,12 +39,12 @@ tasks.shadowJar {
         archiveFileName.set("PickSpawner.jar")
     }
 
-    /*relocate("org.yaml", "fr.fabienhebuterne.pickspawner.libs.org.yaml")
+    relocate("org.yaml", "fr.fabienhebuterne.pickspawner.libs.org.yaml")
     relocate("com.fasterxml", "fr.fabienhebuterne.pickspawner.libs.com.fasterxml")
     relocate("org.intellij", "fr.fabienhebuterne.pickspawner.libs.org.intellij")
     relocate("org.jetbrains.annotations", "fr.fabienhebuterne.pickspawner.libs.org.jetbrains.annotations")
     relocate("me.lucko.commodore", "fr.fabienhebuterne.pickspawner.libs.me.lucko.commodore")
-*/
+
     exclude("DebugProbesKt.bin")
     exclude("module-info.class")
 

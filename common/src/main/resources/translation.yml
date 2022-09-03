@@ -2,10 +2,8 @@ entity:
   PIG: "Pig"
   ZOMBIE: "{#D584FD}Zombie"
 
-# Spawner Display Name
 spawnerDisplayName: "{#339CFF}Spawner : &6{{entity}}"
 
-# Spawner Lore
 spawnerLore:
   - "&eThis is a spawner lore"
 

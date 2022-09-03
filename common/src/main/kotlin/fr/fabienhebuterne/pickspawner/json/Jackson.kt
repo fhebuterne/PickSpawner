@@ -8,7 +8,9 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 
 object Jackson {
-    private val yaml: YAMLFactory = YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER)
+    private val yaml: YAMLFactory = YAMLFactory()
+        .disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER)
+        .disable(YAMLGenerator.Feature.SPLIT_LINES)
 
     val mapper: ObjectMapper = ObjectMapper(yaml)
         .registerKotlinModule()

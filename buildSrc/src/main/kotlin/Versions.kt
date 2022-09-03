@@ -1,7 +1,7 @@
 object Versions {
     private const val kotlin = "1.6.21"
     const val kotlinJvm = kotlin
-    const val jackson = "2.13.1"
+    const val jackson = "2.13.3"
     const val mockk = "1.12.7"
     const val strikt = "0.34.0"
     const val junit = "5.9.0"
