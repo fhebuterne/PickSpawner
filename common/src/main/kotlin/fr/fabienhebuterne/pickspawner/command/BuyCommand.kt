@@ -81,7 +81,7 @@ class BuyCommand(
             ?: throw IllegalStateException("missing material name in configuration to buy item")
 
         if (!playerSender.inventory.contains(materialName, quantityToBuy)) {
-            playerSender.sendMessage(instance.translationConfig.errors.missingItemToBuy)
+            playerSender.sendMessage(instance.translationConfig.errors.missingItemToBuy.toColorHex())
             return
         }
 
@@ -172,7 +172,7 @@ class BuyCommand(
             ?: throw IllegalStateException("missing material name in configuration to buy item")
 
         if (!playerSender.inventory.contains(materialName, quantityToBuy)) {
-            playerSender.sendMessage(instance.translationConfig.errors.missingItemToBuy)
+            playerSender.sendMessage(instance.translationConfig.errors.missingItemToBuy.toColorHex())
             return
         }
 
