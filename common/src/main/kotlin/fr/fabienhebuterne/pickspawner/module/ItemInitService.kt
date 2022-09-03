@@ -62,7 +62,6 @@ class ItemInitService(private val instance: PickSpawner) {
         val loreResult = maxDurability - durability
         val loreFinal: MutableList<String> = instance.defaultConfig.loreCustomPickaxe.toMutableList()
         itemMeta.lore = loreFinal
-            .filter { it.contains("{{usage}}") }
             .map {
                 it.replace(
                     "\\{\\{usage}}".toRegex(),

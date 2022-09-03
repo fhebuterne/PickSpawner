@@ -20,7 +20,7 @@ class ItemInitServiceTest {
         val itemMeta: Damageable = mockk()
         every { itemMeta.damage } returns 10
         every { pickSpawner.defaultConfig } returns DefaultConfig(
-            loreCustomPickaxe = listOf("Usage : {{usage}}")
+            loreCustomPickaxe = listOf("---", "Usage : {{usage}}", "", "---")
         )
 
         val slot: CapturingSlot<List<String>> = slot()
@@ -31,7 +31,7 @@ class ItemInitServiceTest {
         itemInitService.refreshDurabilityOnItemMetaLore(itemMeta, 250)
 
         // THEN
-        expectThat(slot.captured).isEqualTo(listOf("Usage : 240"))
+        expectThat(slot.captured).isEqualTo(listOf("---", "Usage : 240", "", "---"))
 
     }
 
