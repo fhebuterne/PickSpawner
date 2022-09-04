@@ -19,7 +19,8 @@ data class DefaultConfig(
     val materialCustomPickaxe: Material? = Material.IRON_PICKAXE,
     val loreCustomPickaxe: List<String> = listOf(),
     val cancelAnvilRepairCustomPickaxe: Boolean = false,
-    val cancelRepairFromCmiCommand: Boolean = false
+    val cancelRepairFromCmiCommand: Boolean = false,
+    val defaultDamageOnCustomPickaxe: Int = 1
 ): ConfigType {
     fun isCustomPickaxe(itemStack: ItemStack, instance: PickSpawner): Boolean {
         return itemStack.itemMeta?.persistentDataContainer?.has(NamespacedKey(instance, "CustomPickaxe"), PersistentDataType.STRING) == true

@@ -17,7 +17,7 @@ import org.bukkit.inventory.meta.Damageable
 import java.util.stream.IntStream
 
 const val BUY_COMMAND_USAGE =
-    "/pickspawner buy <custom_pickaxe|custom_pickaxe_durability> <damage|durability> <quantity>"
+    "/pickspawner buy <custom_pickaxe|custom_pickaxe_durability> <quantity|durability>"
 
 @CommandInfo("buy", "pickspawner.buy", 1, BUY_COMMAND_USAGE)
 class BuyCommand(
@@ -29,7 +29,6 @@ class BuyCommand(
         LiteralArgumentBuilder.literal<String?>("buy")
             .then(
                 LiteralArgumentBuilder.literal<String?>("custom_pickaxe")
-                    .then(LiteralArgumentBuilder.literal("damage"))
                     .then(LiteralArgumentBuilder.literal("quantity"))
                     .build()
             )
@@ -44,17 +43,16 @@ class BuyCommand(
     }
 
     private fun buy(args: Array<out String>, playerSender: Player) {
-        val damageOrDurability: Int = args.getOrNull(1)?.toIntOrNull() ?: 249
-        val quantity: Int = args.getOrNull(2)?.toIntOrNull() ?: 1
+        val quantityOrDurability: Int = args.getOrNull(1)?.toIntOrNull() ?: 1
 
         when (args[0].uppercase()) {
-            "CUSTOM_PICKAXE" -> buyCustomPickaxe(playerSender, quantity, damageOrDurability)
-            "CUSTOM_PICKAXE_DURABILITY" -> buyCustomPickaxeDurability(playerSender, damageOrDurability)
+            "CUSTOM_PICKAXE" -> buyCustomPickaxe(playerSender, quantityOrDurability)
+            "CUSTOM_PICKAXE_DURABILITY" -> buyCustomPickaxeDurability(playerSender, quantityOrDurability)
             else -> throw BadArgumentException(playerSender, GIVE_COMMAND_USAGE)
         }
     }
 
-    private fun buyCustomPickaxe(playerSender: Player, quantity: Int, damage: Int) {
+    private fun buyCustomPickaxe(playerSender: Player, quantity: Int) {
         val count = playerSender.inventory.storageContents.count { it == null || it.type == Material.AIR }
         if (count < quantity) {
             playerSender.sendMessage(instance.translationConfig.errors.missingPlaceInventoryBuyCancelled.toColorHex())
@@ -62,10 +60,11 @@ class BuyCommand(
         }
 
         val priceCustomPickaxe = instance.defaultConfig.priceCustomPickaxe
+        val defaultDamage = instance.defaultConfig.defaultDamageOnCustomPickaxe
         if (priceCustomPickaxe.economyType == EconomyType.ITEM) {
-            buyCustomPickaxeOnItemEconomy(priceCustomPickaxe, quantity, playerSender, damage)
+            buyCustomPickaxeOnItemEconomy(priceCustomPickaxe, quantity, playerSender, defaultDamage)
         } else if (priceCustomPickaxe.economyType == EconomyType.MONEY) {
-            buyCustomPickaxeOnMoneyEconomy(priceCustomPickaxe, quantity, playerSender, damage)
+            buyCustomPickaxeOnMoneyEconomy(priceCustomPickaxe, quantity, playerSender, defaultDamage)
         }
     }
 
@@ -73,7 +72,7 @@ class BuyCommand(
         priceCustomPickaxe: Price,
         quantity: Int,
         playerSender: Player,
-        damage: Int
+        defaultDamage: Int
     ) {
         val quantityToBuy = priceCustomPickaxe.quantity * quantity
 
@@ -87,7 +86,7 @@ class BuyCommand(
 
         playerSender.inventory.removeItem(ItemStack(materialName, quantityToBuy))
         IntStream.range(0, quantity).forEach {
-            playerSender.inventory.addItem(itemInitService.initCustomPickaxeItemStack(damage))
+            playerSender.inventory.addItem(itemInitService.initCustomPickaxeItemStack(defaultDamage))
         }
         playerSender.sendMessage(instance.translationConfig.buyCustomPickaxe.toColorHex())
     }
@@ -96,7 +95,7 @@ class BuyCommand(
         priceCustomPickaxe: Price,
         quantity: Int,
         playerSender: Player,
-        damage: Int
+        defaultDamage: Int
     ) {
         val price = priceCustomPickaxe.price ?: throw IllegalStateException("missing price in configuration")
         val priceToBuy = price * quantity
@@ -109,7 +108,7 @@ class BuyCommand(
         val withdrawPlayer = instance.getEconomy().withdrawPlayer(playerSender, priceToBuy.toDouble())
         if (withdrawPlayer.transactionSuccess()) {
             IntStream.range(0, quantity).forEach {
-                playerSender.inventory.addItem(itemInitService.initCustomPickaxeItemStack(damage))
+                playerSender.inventory.addItem(itemInitService.initCustomPickaxeItemStack(defaultDamage))
             }
             playerSender.sendMessage(instance.translationConfig.buyCustomPickaxe.toColorHex())
         }
