@@ -12,6 +12,7 @@ import fr.fabienhebuterne.pickspawner.module.cancelrepair.PrepareAnvilEventListe
 import fr.fabienhebuterne.pickspawner.module.entitydamage.EntityDamageByEntityEventListener
 import fr.fabienhebuterne.pickspawner.module.interactspawner.PlayerInteractEventListener
 import fr.fabienhebuterne.pickspawner.module.pickaxeMigration.PickaxeMigrationPlayerInteractEventListener
+import fr.fabienhebuterne.pickspawner.module.placespawner.BlockPlaceEventListener
 import fr.fabienhebuterne.pickspawner.nms.Utils
 import fr.fabienhebuterne.pickspawner.nms.Utils_1_18_R2
 import fr.fabienhebuterne.pickspawner.nms.Utils_1_19_R1
@@ -21,6 +22,7 @@ import org.bukkit.Bukkit
 import org.bukkit.event.Event
 import org.bukkit.event.EventPriority
 import org.bukkit.event.block.BlockBreakEvent
+import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.enchantment.EnchantItemEvent
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.inventory.PrepareAnvilEvent
@@ -95,7 +97,8 @@ class PickSpawner : JavaPlugin() {
             BlockBreakEventListener(
                 this,
                 SilkTouchPickaxeService(this, spawnerItemStackService),
-                CustomPickaxeService(this, spawnerItemStackService)
+                CustomPickaxeService(this, spawnerItemStackService),
+                spawnerItemStackService
             )
         )
         registerEvent(PrepareAnvilEvent::class.java, PrepareAnvilEventListener(this))
@@ -113,6 +116,11 @@ class PickSpawner : JavaPlugin() {
         registerEvent(
             PlayerCommandPreprocessEvent::class.java,
             PlayerCommandPreprocessListener(this)
+        )
+
+        registerEvent(
+            BlockPlaceEvent::class.java,
+            BlockPlaceEventListener()
         )
     }
 

@@ -8,16 +8,36 @@ import org.bukkit.Bukkit
 import org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack
 import org.bukkit.inventory.ItemStack
 import java.lang.reflect.Field
+import java.util.*
 
 class Utils_1_19_R1 : Utils {
 
     override fun findMobFromOldSpawner(itemStack: ItemStack): String? {
         val asNMSCopy = CraftItemStack.asNMSCopy(itemStack)
-        val nbtTagCompound = asNMSCopy.u()
-        if (nbtTagCompound != null && nbtTagCompound.e("PickSpawner")) {
+        val nbtTagCompound = asNMSCopy.u() ?: return null
+        if (nbtTagCompound.e("PickSpawner"))
+        {
             val pickSpawnerCompound = nbtTagCompound.c("PickSpawner") as NBTTagCompound
             return (pickSpawnerCompound.c("id") as NBTTagString).e_()
         }
+        else if(nbtTagCompound.e("BlockEntityTag"))
+        {
+            val blockEntityTag = nbtTagCompound.c("BlockEntityTag") as NBTTagCompound
+
+            if(blockEntityTag.e("EntityId"))
+            {
+                return fixName((blockEntityTag.c("EntityId") as NBTTagString).e_())
+            }
+            else if(blockEntityTag.e("SpawnData"))
+            {
+                val spawnData = blockEntityTag.c("SpawnData") as NBTTagCompound;
+                if(spawnData.e("id"))
+                {
+                    return fixName((spawnData.c("id") as NBTTagString).e_());
+                }
+            }
+        }
+
         return null
     }
     override fun setMaxStackSize(maxStack: Int) {
@@ -29,6 +49,20 @@ class Utils_1_19_R1 : Utils {
             Bukkit.getLogger()
                 .warning("Can't update maxStackSize for spawner because : $e")
             e.printStackTrace()
+        }
+    }
+
+    protected fun fixName(entity: String): String? {
+        return when (entity.lowercase(Locale.getDefault())) {
+            "cavespider" -> "cave_spider"
+            "lavaslime" -> "magma_cube"
+            "villagergolem" -> "iron_golem"
+            "mushroomcow" -> "mushroom_cow"
+            "polarbear" -> "polar_bear"
+            "pigzombie" -> "zombified_piglin"
+            "ozelot" -> "ocelot"
+            "entityhorse" -> "horse"
+            else -> entity
         }
     }
 }
