@@ -5,7 +5,7 @@ plugins {
 
 allprojects {
     group = "fr.fabienhebuterne"
-    version = "3.2.0"
+    version = "3.2.1"
 
     apply(plugin = "kotlin")
 

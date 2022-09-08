@@ -5,10 +5,9 @@ import fr.fabienhebuterne.pickspawner.config.TranslationConfig.Companion.toColor
 import fr.fabienhebuterne.pickspawner.module.BaseListener
 import fr.fabienhebuterne.pickspawner.module.ItemInitService
 import org.bukkit.Bukkit
-import org.bukkit.Material
 import org.bukkit.NamespacedKey
-import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.meta.Damageable
 import org.bukkit.persistence.PersistentDataType
 
@@ -47,17 +46,26 @@ class PickaxeMigrationPlayerInteractEventListener(
         if (pickaxeNameIsPresent || loreIsPresent) {
             val loreToExclude = instance.migrationPickaxeConfig.loreToExclude
 
-            val itemLore = if (loreToExclude != null) {
+            var itemLore = if (loreToExclude != null) {
                 itemMeta?.lore?.filterNot { it.contains(loreToExclude) }
             } else {
                 itemMeta?.lore
             }
 
+            itemLore = itemLore?.map { s -> s.replace("§4?","§4➤") }
+
             if (instance.migrationPickaxeConfig.pickaxeName == itemMeta?.displayName && instance.migrationPickaxeConfig.pickaxeLore == itemLore) {
                 Bukkit.getLogger().info { "[PickSpawner] Migration OLD pickaxe for player ${event.player.uniqueId} to NEW pickaxe" }
                 val damage = (itemMeta as Damageable).damage
-                event.player.inventory.remove(item)
-                event.player.inventory.addItem(itemInitService.initCustomPickaxeItemStack(damage))
+                if(event.hand == EquipmentSlot.HAND)
+                {
+                    event.player.inventory.setItemInMainHand(itemInitService.initCustomPickaxeItemStack(damage))
+                }
+                else
+                {
+                    event.player.inventory.setItemInOffHand(itemInitService.initCustomPickaxeItemStack(damage))
+                }
+
                 event.player.sendMessage(instance.translationConfig.pickaxeHasBeenMigrated.toColorHex())
             }
         }
