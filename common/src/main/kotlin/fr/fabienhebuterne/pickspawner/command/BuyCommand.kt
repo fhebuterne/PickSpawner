@@ -53,6 +53,12 @@ class BuyCommand(
     }
 
     private fun buyCustomPickaxe(playerSender: Player, quantity: Int) {
+        if(!playerSender.hasPermission("pickspawner.buy.pickaxe"))
+        {
+            playerSender.sendMessage(instance.translationConfig.errors.missingPermission.toColorHex())
+            return
+        }
+
         val count = playerSender.inventory.storageContents.count { it == null || it.type == Material.AIR }
         if (count < quantity) {
             playerSender.sendMessage(instance.translationConfig.errors.missingPlaceInventoryBuyCancelled.toColorHex())
@@ -79,7 +85,7 @@ class BuyCommand(
         val materialName = priceCustomPickaxe.materialName
             ?: throw IllegalStateException("missing material name in configuration to buy item")
 
-        if (!playerSender.inventory.contains(materialName, quantityToBuy)) {
+        if (!playerSender.inventory.containsAtLeast(ItemStack(materialName), quantityToBuy)) {
             playerSender.sendMessage(instance.translationConfig.errors.missingItemToBuy.toColorHex())
             return
         }
@@ -115,6 +121,11 @@ class BuyCommand(
     }
 
     private fun buyCustomPickaxeDurability(playerSender: Player, durability: Int) {
+        if(!playerSender.hasPermission("pickspawner.buy.durability"))
+        {
+            playerSender.sendMessage(instance.translationConfig.errors.missingPermission.toColorHex())
+            return
+        }
         val itemInMainHand = playerSender.inventory.itemInMainHand
 
         if (!instance.defaultConfig.isCustomPickaxe(itemInMainHand, instance)) {
@@ -126,6 +137,12 @@ class BuyCommand(
         val maxDurability = itemInMainHand.type.maxDurability
         val damage = (itemMeta as Damageable).damage
         val totalDurability = (maxDurability - damage) + durability
+
+        if(durability <= 0)
+        {
+            playerSender.sendMessage(instance.translationConfig.errors.cancelBuyDurabilityBadDurability.toColorHex())
+            return
+        }
 
         if (totalDurability > maxDurability) {
             playerSender.sendMessage(instance.translationConfig.errors.cancelBuyDurabilityExceedMaxDurability.toColorHex())
@@ -170,7 +187,7 @@ class BuyCommand(
         val materialName = priceAddingDurabilityOnCustomPickaxe.materialName
             ?: throw IllegalStateException("missing material name in configuration to buy item")
 
-        if (!playerSender.inventory.contains(materialName, quantityToBuy)) {
+        if (!playerSender.inventory.containsAtLeast(ItemStack(materialName), quantityToBuy)) {
             playerSender.sendMessage(instance.translationConfig.errors.missingItemToBuy.toColorHex())
             return
         }
@@ -178,7 +195,7 @@ class BuyCommand(
         playerSender.inventory.removeItem(ItemStack(materialName, quantityToBuy))
         itemMeta.damage = damage - durability
         itemInMainHand.itemMeta = itemInitService.refreshDurabilityOnItemMetaLore(itemMeta, maxDurability.toInt())
-        playerSender.sendMessage(instance.translationConfig.buyCustomPickaxeDurability.toColorHex())
+        playerSender.sendMessage(instance.translationConfig.buyCustomPickaxeDurability.replace("{{durability}}", durability.toString()).toColorHex())
     }
 
     private fun buyCustomPickaxeDurabilityOnMoneyEconomy(
@@ -203,7 +220,7 @@ class BuyCommand(
         if (withdrawPlayer.transactionSuccess()) {
             itemMeta.damage = damage - durability
             itemInMainHand.itemMeta = itemInitService.refreshDurabilityOnItemMetaLore(itemMeta, maxDurability.toInt())
-            playerSender.sendMessage(instance.translationConfig.buyCustomPickaxeDurability.toColorHex())
+            playerSender.sendMessage(instance.translationConfig.buyCustomPickaxeDurability.replace("{{durability}}", durability.toString()).toColorHex())
         }
     }
 

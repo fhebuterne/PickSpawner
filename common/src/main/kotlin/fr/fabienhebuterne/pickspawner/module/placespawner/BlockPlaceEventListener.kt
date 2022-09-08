@@ -10,13 +10,13 @@ class BlockPlaceEventListener : BaseListener<BlockPlaceEvent>()
 {
     override fun execute(event: BlockPlaceEvent)
     {
-        if (event.blockPlaced.type != Material.SPAWNER && PlayerInteractEventListener.entityType != null) {
+        if (event.blockPlaced.type != Material.SPAWNER || PlayerInteractEventListener.entityType == null) {
             return
         }
 
         val blockState = event.blockPlaced.state;
         val spawner = blockState as CreatureSpawner;
-        spawner.spawnedType = PlayerInteractEventListener.entityType!!;
+        spawner.spawnedType = PlayerInteractEventListener.entityType!!
         blockState.update();
     }
 }

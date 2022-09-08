@@ -5,6 +5,7 @@ import com.mojang.brigadier.tree.LiteralCommandNode
 import fr.fabienhebuterne.pickspawner.PickSpawner
 import fr.fabienhebuterne.pickspawner.command.factory.AbstractCommand
 import fr.fabienhebuterne.pickspawner.command.factory.CommandInfoInit
+import fr.fabienhebuterne.pickspawner.config.TranslationConfig.Companion.toColorHex
 import fr.fabienhebuterne.pickspawner.exception.CustomException
 import fr.fabienhebuterne.pickspawner.module.ItemInitService
 import org.bukkit.command.Command
@@ -26,7 +27,7 @@ class CommandsRegistration(
     init {
         registration(
             BuyCommand(instance, itemInitService),
-            GiveCommand(itemInitService),
+            GiveCommand(instance, itemInitService),
             ReloadCommand(instance)
         )
     }
@@ -78,7 +79,7 @@ class CommandsRegistration(
         try {
             if (sender is Player) {
                 if (!sender.hasPermission(commandInfoInit.permission)) {
-                    sender.sendMessage(instance.translationConfig.errors.missingPermission)
+                    sender.sendMessage(instance.translationConfig.errors.missingPermission.toColorHex())
                     return true
                 }
 

@@ -78,6 +78,8 @@ data class ErrorConfig(
     val itemCannotBreakSpawner: String,
     val pickaxeBreakOnlySpawner: String,
     val missingPlaceInventoryBuyCancelled: String,
+    val missingPlaceInventoryGiveDrop: String,
+    val cancelBuyDurabilityBadDurability: String,
     val missingMoneyToBuy: String,
     val missingItemToBuy: String,
     val cancelBuyDurabilityMissingCustomPickaxeInMainHand: String,

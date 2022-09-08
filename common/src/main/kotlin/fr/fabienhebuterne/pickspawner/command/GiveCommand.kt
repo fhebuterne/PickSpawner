@@ -6,6 +6,7 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder
 import fr.fabienhebuterne.pickspawner.PickSpawner
 import fr.fabienhebuterne.pickspawner.command.factory.AbstractCommand
 import fr.fabienhebuterne.pickspawner.command.factory.CommandInfo
+import fr.fabienhebuterne.pickspawner.config.TranslationConfig.Companion.toColorHex
 import fr.fabienhebuterne.pickspawner.exception.BadArgumentException
 import fr.fabienhebuterne.pickspawner.exception.PlayerNotFoundException
 import fr.fabienhebuterne.pickspawner.module.ItemInitService
@@ -21,6 +22,7 @@ const val GIVE_COMMAND_USAGE = "/pickspawner give <player|uuid> <spawner|custom_
 
 @CommandInfo("give", "pickspawner.give", 2, GIVE_COMMAND_USAGE)
 class GiveCommand(
+    private val instance: PickSpawner,
     private val itemInitService: ItemInitService
 ) : AbstractCommand() {
 
@@ -58,48 +60,41 @@ class GiveCommand(
             ?: throw PlayerNotFoundException(commandSender, playerNameOrUuid)
 
         when (args[1].uppercase()) {
-            "SPAWNER" -> giveSpawner(args, player, commandSender)
-            "CUSTOM_PICKAXE" -> giveCustomPickaxe(args, player, commandSender)
+            "SPAWNER" -> giveSpawner(args, player)
+            "CUSTOM_PICKAXE" -> giveCustomPickaxe(args, player)
             else -> throw BadArgumentException(commandSender, GIVE_COMMAND_USAGE)
         }
     }
 
     private fun giveCustomPickaxe(
         args: Array<out String>,
-        player: Player,
-        commandSender: CommandSender
+        player: Player
     ) {
         val damage = args.getOrNull(2)?.toIntOrNull() ?: 0
         val result = player.inventory.addItem(itemInitService.initCustomPickaxeItemStack(damage))
-        showAddItemResult(result, player, commandSender)
+        if(!result.isEmpty())
+        {
+            result.forEach { (_: Int, itemStack: ItemStack) ->
+                player.world.dropItem(player.location, itemStack);
+            }
+
+            player.sendMessage(instance.translationConfig.errors.missingPlaceInventoryGiveDrop.toColorHex())
+        }
     }
 
     private fun giveSpawner(
         args: Array<out String>,
-        player: Player,
-        commandSender: CommandSender
+        player: Player
     ) {
         val entityType = EntityType.valueOf(args[2].uppercase())
         val result = player.inventory.addItem(itemInitService.initSpawnerItemStack(entityType))
-        showAddItemResult(result, player, commandSender, entityType)
-    }
-
-    private fun showAddItemResult(
-        result: HashMap<Int, ItemStack>,
-        player: Player,
-        commandSender: CommandSender,
-        entityType: EntityType? = null
-    ) {
-        result.forEach { (_: Int, itemStack: ItemStack) ->
-            if (entityType != null) {
-                Bukkit.getLogger()
-                    .warning("Missing place in ${player.name} (${player.uniqueId}) inventory - can't add ${itemStack.amount} x ${itemStack.type} - $entityType")
-                commandSender.sendMessage("Missing place in inventory - can't add ${itemStack.amount} x ${itemStack.type} - $entityType")
-            } else {
-                Bukkit.getLogger()
-                    .warning("Missing place in ${player.name} (${player.uniqueId}) inventory - can't add ${itemStack.amount} x ${itemStack.type}")
-                commandSender.sendMessage("Missing place in inventory - can't add ${itemStack.amount} x ${itemStack.type}")
+        if(!result.isEmpty())
+        {
+            result.forEach { (_: Int, itemStack: ItemStack) ->
+                player.world.dropItem(player.location, itemStack);
             }
+
+            player.sendMessage(instance.translationConfig.errors.missingPlaceInventoryGiveDrop.toColorHex())
         }
     }
 

@@ -18,6 +18,8 @@ errors:
   cancelDamageEntityCustomPickaxe: "&8[&e&lPickSpawner&8] &cCan't use this pickaxe to damage entities !"
   cancelRepairFromCommand: "&8[&e&lPickSpawner&8] &cCan't repair this pickaxe with this command !"
   itemCannotBreakSpawner: "&8[&e&lPickSpawner&8] &cThis item cannot broke this spawner !"
+  missingPlaceInventoryGiveDrop: "&8[&e&lPickSpawner&8] &cMissing place in your inventory, item dropped !"
+  cancelBuyDurabilityBadDurability: "&8[&e&lPickSpawner&8] &cBad durability !"
   pickaxeBreakOnlySpawner: "&8[&e&lPickSpawner&8] &cThis pickaxe can only break spawners !"
   missingPlaceInventoryBuyCancelled: "&8[&e&lPickSpawner&8] &cMissing place in your inventory, purchase cancelled !"
   missingMoneyToBuy: "&8[&e&lPickSpawner&8] &cYou don't have enough money to buy this !"
