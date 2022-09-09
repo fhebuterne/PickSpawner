@@ -37,23 +37,12 @@ class PlayerInteractEventListener(
         val mobFromOldSpawner = instance.nms.findMobFromOldSpawner(itemStack)
 
         if (mobFromOldSpawner != null) {
-            Bukkit.getLogger().info { "Start to migrate OLD spawner for player ${event.player.uniqueId} to NEW spawner with type ${mobFromOldSpawner.uppercase()}" }
-            val spawnerItemStack = itemInitService.initSpawnerItemStack(EntityType.valueOf(mobFromOldSpawner.uppercase()))
-            if(event.hand == EquipmentSlot.HAND)
-            {
-                event.player.inventory.setItemInMainHand(spawnerItemStack)
-            }
-            else
-            {
-                event.player.inventory.setItemInOffHand(spawnerItemStack)
-            }
-
-            itemStack = spawnerItemStack
-
-            Bukkit.getLogger().info { "Finish to migrate OLD spawner for player ${event.player.uniqueId} to NEW spawner with type ${mobFromOldSpawner.uppercase()}" }
+            entityType = EntityType.valueOf(mobFromOldSpawner.uppercase());
         }
-
-        entityType = ((itemStack.itemMeta as BlockStateMeta).blockState as CreatureSpawner).spawnedType;
+        else
+        {
+            entityType = ((itemStack.itemMeta as BlockStateMeta).blockState as CreatureSpawner).spawnedType;
+        }
     }
 
     private fun cancelUpdateSpawnerWithEggs(event: PlayerInteractEvent) {
