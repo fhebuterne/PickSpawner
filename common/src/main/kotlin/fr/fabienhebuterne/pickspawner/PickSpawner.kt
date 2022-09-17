@@ -99,7 +99,8 @@ class PickSpawner : JavaPlugin() {
                 SilkTouchPickaxeService(this, spawnerItemStackService),
                 CustomPickaxeService(this, spawnerItemStackService),
                 spawnerItemStackService
-            )
+            ),
+            EventPriority.HIGHEST
         )
         server.pluginManager.registerEvents(PrepareAnvilEventListener(this), this)
         registerEvent(EnchantItemEvent::class.java, EnchantItemEventListener(this))
@@ -125,11 +126,15 @@ class PickSpawner : JavaPlugin() {
     }
 
     // We need to use registerEvent with more parameters because we use generic abstract class to init try catch
-    private fun registerEvent(eventClass: Class<out Event>, listener: BaseListener<*>) {
+    private fun registerEvent(
+        eventClass: Class<out Event>,
+        listener: BaseListener<*>,
+        eventPriority: EventPriority = EventPriority.NORMAL
+    ) {
         server.pluginManager.registerEvent(
             eventClass,
             listener,
-            EventPriority.NORMAL,
+            eventPriority,
             listener,
             this
         )
