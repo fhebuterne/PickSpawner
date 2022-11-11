@@ -44,7 +44,7 @@ class Utils_1_19_R1 : Utils {
         try {
             val maxStackSizeField: Field = Item::class.java.getDeclaredField("d")
             maxStackSizeField.isAccessible = true
-            maxStackSizeField.setInt(Blocks.bV.l(), maxStack)
+            maxStackSizeField.setInt(Blocks.ce.l(), maxStack)
         } catch (e: Exception) {
             Bukkit.getLogger()
                 .warning("Can't update maxStackSize for spawner because : $e")
