@@ -3,6 +3,9 @@ authors: [fabien91]
 version: ${version}
 main: fr.fabienhebuterne.pickspawner.PickSpawner
 depend: [Vault]
+# Kotlin isn't included in PickSpawner so we need loader plugin to load kotlin before current plugin
+softdepend:
+  - eco
 api-version: 1.18
 
 commands:

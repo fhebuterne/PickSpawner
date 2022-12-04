@@ -12,8 +12,8 @@ fun Project.nmsDependencies(version: String) {
 
 fun Project.defaultDependencies() {
     dependencies {
-        "testImplementation"(kotlin("stdlib-jdk8"))
-        "implementation"(kotlin("stdlib-jdk8"))
+        "testCompileOnly"(kotlin("stdlib-jdk8"))
+        "compileOnly"(kotlin("stdlib-jdk8"))
     }
 }
 

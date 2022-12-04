@@ -47,6 +47,7 @@ tasks.shadowJar {
 
     exclude("DebugProbesKt.bin")
     exclude("module-info.class")
+    exclude("kotlin/")
 
     dependencies {
         exclude(dependency("com.mojang:brigadier"))
