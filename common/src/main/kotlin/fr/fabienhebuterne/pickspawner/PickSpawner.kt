@@ -16,6 +16,7 @@ import fr.fabienhebuterne.pickspawner.module.placespawner.BlockPlaceEventListene
 import fr.fabienhebuterne.pickspawner.nms.Utils
 import fr.fabienhebuterne.pickspawner.nms.Utils_1_18_R2
 import fr.fabienhebuterne.pickspawner.nms.Utils_1_19_R1
+import fr.fabienhebuterne.pickspawner.nms.Utils_1_19_R2
 import me.lucko.commodore.CommodoreProvider
 import net.milkbowl.vault.economy.Economy
 import org.bukkit.Bukkit
@@ -65,6 +66,7 @@ class PickSpawner : JavaPlugin() {
         nms = when (currentVersion) {
             "v1_18_R2" -> Utils_1_18_R2()
             "v1_19_R1" -> Utils_1_19_R1()
+            "v1_19_R2" -> Utils_1_19_R2()
             else -> {
                 Bukkit.getLogger().severe("Your server version isn't compatible with PickSpawner")
                 server.pluginManager.disablePlugin(this)

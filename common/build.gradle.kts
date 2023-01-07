@@ -20,6 +20,7 @@ dependencies {
     implementation(project(":nms:interfaces"))
     implementation(project(":nms:v1_18_R2"))
     implementation(project(":nms:v1_19_R1"))
+    implementation(project(":nms:v1_19_R2"))
 }
 
 tasks.processResources {
