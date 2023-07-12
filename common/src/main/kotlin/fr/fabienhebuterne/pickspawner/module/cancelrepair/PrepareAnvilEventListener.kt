@@ -5,6 +5,7 @@ import fr.fabienhebuterne.pickspawner.config.TranslationConfig.Companion.toColor
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.inventory.ItemStack
@@ -13,7 +14,7 @@ class PrepareAnvilEventListener(
     private val instance: PickSpawner,
 ) : Listener {
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     fun execute(event: PrepareAnvilEvent) {
         cancelAnvilRepairOnCustomPickaxe(event)
     }
