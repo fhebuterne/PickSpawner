@@ -46,23 +46,22 @@ class PickaxeMigrationPlayerInteractEventListener(
         if (pickaxeNameIsPresent || loreIsPresent) {
             val loreToExclude = instance.migrationPickaxeConfig.loreToExclude
 
-            var itemLore = if (loreToExclude != null) {
+            val itemLore = if (loreToExclude != null) {
                 itemMeta?.lore?.filterNot { it.contains(loreToExclude) }
             } else {
                 itemMeta?.lore
             }
 
-            itemLore = itemLore?.map { s -> s.replace("§4?","§4➤") }
+            val pickaxeLoreConfigCleaned = instance.migrationPickaxeConfig.pickaxeLore.map { cleanColorAndTrimLore(it) }
+            val pickaxeItemLoreCleaned = itemLore?.map { cleanColorAndTrimLore(it.replace("§4?", "§4➤")) }
 
-            if (instance.migrationPickaxeConfig.pickaxeName == itemMeta?.displayName && instance.migrationPickaxeConfig.pickaxeLore == itemLore) {
-                Bukkit.getLogger().info { "[PickSpawner] Migration OLD pickaxe for player ${event.player.uniqueId} to NEW pickaxe" }
+            if (instance.migrationPickaxeConfig.pickaxeName == itemMeta?.displayName && pickaxeLoreConfigCleaned == pickaxeItemLoreCleaned) {
+                Bukkit.getLogger()
+                    .info { "[PickSpawner] Migration OLD pickaxe for player ${event.player.uniqueId} to NEW pickaxe" }
                 val damage = (itemMeta as Damageable).damage
-                if(event.hand == EquipmentSlot.HAND)
-                {
+                if (event.hand == EquipmentSlot.HAND) {
                     event.player.inventory.setItemInMainHand(itemInitService.initCustomPickaxeItemStack(damage))
-                }
-                else
-                {
+                } else {
                     event.player.inventory.setItemInOffHand(itemInitService.initCustomPickaxeItemStack(damage))
                 }
 
@@ -70,5 +69,9 @@ class PickaxeMigrationPlayerInteractEventListener(
             }
         }
 
+    }
+
+    private fun cleanColorAndTrimLore(lore: String): String {
+        return lore.replace(Regex("§[0-9a-f]"), "").trim()
     }
 }
