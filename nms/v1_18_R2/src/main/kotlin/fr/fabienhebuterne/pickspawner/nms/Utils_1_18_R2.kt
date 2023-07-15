@@ -53,18 +53,4 @@ class Utils_1_18_R2 : Utils {
             e.printStackTrace()
         }
     }
-
-    protected fun fixName(entity: String): String? {
-        return when (entity.lowercase(Locale.getDefault())) {
-            "cavespider" -> "cave_spider"
-            "lavaslime" -> "magma_cube"
-            "villagergolem" -> "iron_golem"
-            "mushroomcow" -> "mushroom_cow"
-            "polarbear" -> "polar_bear"
-            "pigzombie" -> "zombified_piglin"
-            "ozelot" -> "ocelot"
-            "entityhorse" -> "horse"
-            else -> entity
-        }
-    }
 }
