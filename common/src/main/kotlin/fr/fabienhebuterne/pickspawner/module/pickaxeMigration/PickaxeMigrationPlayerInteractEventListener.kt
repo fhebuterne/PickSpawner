@@ -2,10 +2,12 @@ package fr.fabienhebuterne.pickspawner.module.pickaxeMigration
 
 import fr.fabienhebuterne.pickspawner.PickSpawner
 import fr.fabienhebuterne.pickspawner.config.TranslationConfig.Companion.toColorHex
-import fr.fabienhebuterne.pickspawner.module.BaseListener
+import fr.fabienhebuterne.pickspawner.module.CommonListener
 import fr.fabienhebuterne.pickspawner.module.ItemInitService
 import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
+import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.meta.Damageable
@@ -14,10 +16,11 @@ import org.bukkit.persistence.PersistentDataType
 class PickaxeMigrationPlayerInteractEventListener(
     private val instance: PickSpawner,
     private val itemInitService: ItemInitService
-) :
-    BaseListener<PlayerInteractEvent>() {
-    override fun execute(event: PlayerInteractEvent) {
-        migrationFromOldToNewPickaxe(event)
+) : Listener {
+
+    @EventHandler
+    fun execute(event: PlayerInteractEvent) {
+        CommonListener.execute { migrationFromOldToNewPickaxe(event) }
     }
 
     private fun migrationFromOldToNewPickaxe(event: PlayerInteractEvent) {

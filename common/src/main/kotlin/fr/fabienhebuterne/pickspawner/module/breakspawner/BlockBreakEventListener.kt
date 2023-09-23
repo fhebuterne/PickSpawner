@@ -1,11 +1,14 @@
 package fr.fabienhebuterne.pickspawner.module.breakspawner
 
 import fr.fabienhebuterne.pickspawner.PickSpawner
-import fr.fabienhebuterne.pickspawner.module.BaseListener
+import fr.fabienhebuterne.pickspawner.module.CommonListener
 import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.block.CreatureSpawner
 import org.bukkit.entity.EntityType
+import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
+import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
 
 class BlockBreakEventListener(
@@ -13,9 +16,14 @@ class BlockBreakEventListener(
     private val silkTouchPickaxeService: SilkTouchPickaxeService,
     private val customPickaxeService: CustomPickaxeService,
     private val spawnerItemStackService: SpawnerItemStackService
-) : BaseListener<BlockBreakEvent>() {
+) : Listener {
 
-    override fun execute(event: BlockBreakEvent) {
+    @EventHandler(priority = EventPriority.HIGHEST)
+    fun execute(event: BlockBreakEvent) {
+        CommonListener.execute { blockBreakEvent(event) }
+    }
+
+    private fun blockBreakEvent(event: BlockBreakEvent) {
         if (event.isCancelled) {
             return
         }

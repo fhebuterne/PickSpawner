@@ -2,19 +2,17 @@ package fr.fabienhebuterne.pickspawner.module.entitydamage
 
 import fr.fabienhebuterne.pickspawner.PickSpawner
 import fr.fabienhebuterne.pickspawner.config.TranslationConfig.Companion.toColorHex
-import fr.fabienhebuterne.pickspawner.module.BaseListener
+import fr.fabienhebuterne.pickspawner.module.CommonListener
 import org.bukkit.entity.Player
+import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
-import org.bukkit.event.entity.EntityDamageEvent
 
-class EntityDamageByEntityEventListener(private val instance: PickSpawner) : BaseListener<EntityDamageEvent>() {
-    override fun execute(event: EntityDamageEvent) {
-        // This is a workaround because event from EntityDamageEvent are passed when EntityDamageByEntityEvent is registered strange...
-        if (event !is EntityDamageByEntityEvent) {
-            return
-        }
+class EntityDamageByEntityEventListener(private val instance: PickSpawner) : Listener {
 
-        cancelUsingCustomPickaxeOnEntities(event)
+    @EventHandler
+    fun execute(event: EntityDamageByEntityEvent) {
+        CommonListener.execute { cancelUsingCustomPickaxeOnEntities(event) }
     }
 
     private fun cancelUsingCustomPickaxeOnEntities(event: EntityDamageByEntityEvent) {
@@ -29,4 +27,5 @@ class EntityDamageByEntityEventListener(private val instance: PickSpawner) : Bas
             damager.sendMessage(instance.translationConfig.errors.cancelDamageEntityCustomPickaxe.toColorHex())
         }
     }
+    
 }

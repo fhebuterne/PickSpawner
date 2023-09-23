@@ -1,18 +1,24 @@
 package fr.fabienhebuterne.pickspawner.module.breakspawner
 
 import fr.fabienhebuterne.pickspawner.PickSpawner
-import fr.fabienhebuterne.pickspawner.module.BaseListener
+import fr.fabienhebuterne.pickspawner.module.CommonListener
 import fr.fabienhebuterne.pickspawner.module.ItemInitService
-import org.bukkit.Bukkit
+import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerItemDamageEvent
 import org.bukkit.inventory.meta.Damageable
 
 class PlayerItemDamageListener(
     private val instance: PickSpawner,
     private val itemInitService: ItemInitService
-) : BaseListener<PlayerItemDamageEvent>() {
+) : Listener {
 
-    override fun execute(event: PlayerItemDamageEvent) {
+    @EventHandler
+    fun execute(event: PlayerItemDamageEvent) {
+        CommonListener.execute { playerItemDamageEvent(event) }
+    }
+
+    fun playerItemDamageEvent(event: PlayerItemDamageEvent) {
         if (event.isCancelled) {
             return
         }
