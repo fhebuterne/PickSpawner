@@ -56,6 +56,7 @@ class PickSpawner : JavaPlugin() {
             "v1_19_R3" -> Utils_1_19_R3()
             "v1_20_R1" -> Utils_1_20_R1()
             "v1_20_R2" -> Utils_1_20_R2()
+            "v1_20_R3" -> Utils_1_20_R3()
             else -> {
                 Bukkit.getLogger().severe("Your server version isn't compatible with PickSpawner")
                 server.pluginManager.disablePlugin(this)
