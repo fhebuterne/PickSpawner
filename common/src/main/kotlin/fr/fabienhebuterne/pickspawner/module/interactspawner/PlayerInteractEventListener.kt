@@ -23,28 +23,7 @@ class PlayerInteractEventListener(
     }
 
     private fun playerInteractEvent(event: PlayerInteractEvent) {
-        migrateOldSpawnerToNewSpawner(event)
         cancelUpdateSpawnerWithEggs(event)
-    }
-
-    companion object {
-        var entityType: EntityType? = null;
-    }
-
-    private fun migrateOldSpawnerToNewSpawner(event: PlayerInteractEvent) {
-        var itemStack = event.item
-
-        if (itemStack == null || itemStack.type != Material.SPAWNER) {
-            return
-        }
-
-        val mobFromOldSpawner = instance.nms.findMobFromOldSpawner(itemStack)
-
-        if (mobFromOldSpawner != null) {
-            entityType = EntityType.valueOf(mobFromOldSpawner.uppercase())
-        } else {
-            entityType = ((itemStack.itemMeta as BlockStateMeta).blockState as CreatureSpawner).spawnedType
-        }
     }
 
     private fun cancelUpdateSpawnerWithEggs(event: PlayerInteractEvent) {

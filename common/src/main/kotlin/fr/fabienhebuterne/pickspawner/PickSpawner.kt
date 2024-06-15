@@ -11,7 +11,6 @@ import fr.fabienhebuterne.pickspawner.module.cancelrepair.PrepareAnvilEventListe
 import fr.fabienhebuterne.pickspawner.module.entitydamage.EntityDamageByEntityEventListener
 import fr.fabienhebuterne.pickspawner.module.interactspawner.PlayerInteractEventListener
 import fr.fabienhebuterne.pickspawner.module.pickaxeMigration.PickaxeMigrationPlayerInteractEventListener
-import fr.fabienhebuterne.pickspawner.module.placespawner.BlockPlaceEventListener
 import fr.fabienhebuterne.pickspawner.nms.*
 import me.lucko.commodore.CommodoreProvider
 import net.milkbowl.vault.economy.Economy
@@ -98,7 +97,6 @@ class PickSpawner : JavaPlugin() {
         pluginManager.registerEvents(PickaxeMigrationPlayerInteractEventListener(this, itemInitService), this)
         pluginManager.registerEvents(PlayerItemDamageListener(this, itemInitService), this)
         pluginManager.registerEvents(PlayerCommandPreprocessListener(this), this)
-        pluginManager.registerEvents(BlockPlaceEventListener(), this)
     }
 
     private fun registerCommands(itemInitService: ItemInitService) {
