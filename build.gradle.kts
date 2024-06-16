@@ -20,15 +20,40 @@ allprojects {
     defaultDependencies()
     testDependencies()
 
+    val javaVersion = JavaVersion.VERSION_17.toString()
+
     tasks.compileKotlin {
         kotlinOptions {
-            jvmTarget = "17"
+            jvmTarget = javaVersion
         }
     }
 
     tasks.compileTestKotlin {
         kotlinOptions {
-            jvmTarget = "17"
+            jvmTarget = javaVersion
+        }
+    }
+
+    tasks.compileJava {
+        sourceCompatibility = javaVersion
+        targetCompatibility = javaVersion
+    }
+
+    tasks.compileTestJava {
+        sourceCompatibility = javaVersion
+        targetCompatibility = javaVersion
+    }
+}
+
+// This is workaround to fix build issue with jackson 2.17.x and shadowJar 8.1.x
+buildscript {
+    configurations {
+        classpath {
+            resolutionStrategy {
+                //in order to handle jackson's higher release version in shadow, this needs to be upgraded to latest.
+                force("org.ow2.asm:asm:9.6")
+                force("org.ow2.asm:asm-commons:9.6")
+            }
         }
     }
 }
