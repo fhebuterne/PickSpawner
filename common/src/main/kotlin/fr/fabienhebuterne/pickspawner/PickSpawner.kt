@@ -11,6 +11,7 @@ import fr.fabienhebuterne.pickspawner.module.cancelrepair.PrepareAnvilEventListe
 import fr.fabienhebuterne.pickspawner.module.entitydamage.EntityDamageByEntityEventListener
 import fr.fabienhebuterne.pickspawner.module.interactspawner.PlayerInteractEventListener
 import fr.fabienhebuterne.pickspawner.module.pickaxeMigration.PickaxeMigrationPlayerInteractEventListener
+import fr.fabienhebuterne.pickspawner.module.placespawner.BlockPlaceEventListener
 import fr.fabienhebuterne.pickspawner.nms.*
 import me.lucko.commodore.CommodoreProvider
 import net.milkbowl.vault.economy.Economy
@@ -43,10 +44,7 @@ class PickSpawner : JavaPlugin() {
                 .toTypedArray()
                 .getOrNull(3)
 
-        if (currentVersion == null) {
-            Bukkit.getLogger().severe("Your server version isn't compatible with PickSpawner")
-            server.pluginManager.disablePlugin(this)
-        }
+        val minecraftVersion: String = Bukkit.getServer().bukkitVersion
 
         nms = when (currentVersion) {
             "v1_18_R2" -> Utils_1_18_R2()
@@ -57,9 +55,15 @@ class PickSpawner : JavaPlugin() {
             "v1_20_R2" -> Utils_1_20_R2()
             "v1_20_R3" -> Utils_1_20_R3()
             else -> {
-                Bukkit.getLogger().severe("Your server version isn't compatible with PickSpawner")
-                server.pluginManager.disablePlugin(this)
-                throw IllegalStateException("Your server version isn't compatible with PickSpawner")
+                // checking version in class name has changed since 1.20.6
+                when (minecraftVersion) {
+                    "1.20.6-R0.1-SNAPSHOT" -> Utils_1_20_R4()
+                    else -> {
+                        Bukkit.getLogger().severe("Your server version $currentVersion / $minecraftVersion isn't compatible with PickSpawner")
+                        server.pluginManager.disablePlugin(this)
+                        throw IllegalStateException("Your server version $currentVersion / $minecraftVersion isn't compatible with PickSpawner")
+                    }
+                }
             }
         }
     }
@@ -84,12 +88,14 @@ class PickSpawner : JavaPlugin() {
     private fun loadListeners(itemInitService: ItemInitService) {
         val pluginManager = server.pluginManager
         val spawnerItemStackService = SpawnerItemStackService(this, itemInitService)
-        pluginManager.registerEvents(BlockBreakEventListener(
-            this,
-            SilkTouchPickaxeService(this, spawnerItemStackService),
-            CustomPickaxeService(this, spawnerItemStackService),
-            spawnerItemStackService
-        ), this)
+        pluginManager.registerEvents(
+            BlockBreakEventListener(
+                this,
+                SilkTouchPickaxeService(this, spawnerItemStackService),
+                CustomPickaxeService(this, spawnerItemStackService),
+                spawnerItemStackService
+            ), this
+        )
         pluginManager.registerEvents(PrepareAnvilEventListener(this), this)
         pluginManager.registerEvents(EnchantItemEventListener(this), this)
         pluginManager.registerEvents(PlayerInteractEventListener(this), this)
@@ -97,6 +103,7 @@ class PickSpawner : JavaPlugin() {
         pluginManager.registerEvents(PickaxeMigrationPlayerInteractEventListener(this, itemInitService), this)
         pluginManager.registerEvents(PlayerItemDamageListener(this, itemInitService), this)
         pluginManager.registerEvents(PlayerCommandPreprocessListener(this), this)
+        pluginManager.registerEvents(BlockPlaceEventListener(), this)
     }
 
     private fun registerCommands(itemInitService: ItemInitService) {
