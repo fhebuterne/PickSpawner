@@ -5,7 +5,7 @@ plugins {
 
 allprojects {
     group = "fr.fabienhebuterne"
-    version = "3.6.0"
+    version = System.getProperty("tagVersion") ?: "SNAPSHOT"
 
     apply(plugin = "kotlin")
 
