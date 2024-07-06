@@ -40,7 +40,7 @@ class GiveCommand(
             )
 
     private fun LiteralArgumentBuilder<String>.entityTypesToCommodore(): LiteralArgumentBuilder<String> {
-        return EntityType.values().fold(this) { accumulator, entity ->
+        return EntityType.entries.fold(this) { accumulator, entity ->
             accumulator.then(LiteralArgumentBuilder.literal(entity.name))
         }
     }
@@ -72,8 +72,7 @@ class GiveCommand(
     ) {
         val damage = args.getOrNull(2)?.toIntOrNull() ?: 0
         val result = player.inventory.addItem(itemInitService.initCustomPickaxeItemStack(damage))
-        if(!result.isEmpty())
-        {
+        if (result.isNotEmpty()) {
             result.forEach { (_: Int, itemStack: ItemStack) ->
                 player.world.dropItem(player.location, itemStack);
             }
@@ -88,8 +87,7 @@ class GiveCommand(
     ) {
         val entityType = EntityType.valueOf(args[2].uppercase())
         val result = player.inventory.addItem(itemInitService.initSpawnerItemStack(entityType))
-        if(!result.isEmpty())
-        {
+        if (result.isNotEmpty()) {
             result.forEach { (_: Int, itemStack: ItemStack) ->
                 player.world.dropItem(player.location, itemStack);
             }

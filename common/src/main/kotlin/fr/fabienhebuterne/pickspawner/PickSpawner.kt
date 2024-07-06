@@ -1,6 +1,5 @@
 package fr.fabienhebuterne.pickspawner
 
-import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import fr.fabienhebuterne.pickspawner.command.CommandsRegistration
 import fr.fabienhebuterne.pickspawner.config.*
 import fr.fabienhebuterne.pickspawner.module.ItemInitService
@@ -8,6 +7,7 @@ import fr.fabienhebuterne.pickspawner.module.breakspawner.*
 import fr.fabienhebuterne.pickspawner.module.cancelenchant.EnchantItemEventListener
 import fr.fabienhebuterne.pickspawner.module.cancelrepair.PlayerCommandPreprocessListener
 import fr.fabienhebuterne.pickspawner.module.cancelrepair.PrepareAnvilEventListener
+import fr.fabienhebuterne.pickspawner.module.commodore.CommodoreService
 import fr.fabienhebuterne.pickspawner.module.entitydamage.EntityDamageByEntityEventListener
 import fr.fabienhebuterne.pickspawner.module.interactspawner.PlayerInteractEventListener
 import fr.fabienhebuterne.pickspawner.module.pickaxeMigration.PickaxeMigrationPlayerInteractEventListener
@@ -58,6 +58,7 @@ class PickSpawner : JavaPlugin() {
                 // checking version in class name has changed since 1.20.6
                 when (minecraftVersion) {
                     "1.20.6-R0.1-SNAPSHOT" -> Utils_1_20_R4()
+                    "1.21-R0.1-SNAPSHOT" -> Utils_1_21_R1()
                     else -> {
                         Bukkit.getLogger().severe("Your server version $currentVersion / $minecraftVersion isn't compatible with PickSpawner")
                         server.pluginManager.disablePlugin(this)
@@ -108,17 +109,16 @@ class PickSpawner : JavaPlugin() {
 
     private fun registerCommands(itemInitService: ItemInitService) {
         val baseCommand = "pickspawner"
-        val pickSpawnerBaseCommodore = LiteralArgumentBuilder.literal<String>(baseCommand)
-        val commandsRegistration = CommandsRegistration(this, itemInitService, pickSpawnerBaseCommodore)
+        val commandsRegistration = CommandsRegistration(this, itemInitService, baseCommand)
 
         // Register base command
         val command = getCommand(baseCommand)
         command?.setExecutor(commandsRegistration)
 
         // Register commodore
-        val commodoreBuild = commandsRegistration.getCommodoreBuild()
-        val commodore = CommodoreProvider.getCommodore(this)
-        commodore.register(command, commodoreBuild) { commandsRegistration.hasCommodorePermission(it) }
+        if (CommodoreProvider.isSupported()) {
+            CommodoreService().init(this, commandsRegistration, command)
+        }
     }
 
     private fun setupEconomy(): Boolean {

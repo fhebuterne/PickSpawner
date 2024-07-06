@@ -53,8 +53,7 @@ class BuyCommand(
     }
 
     private fun buyCustomPickaxe(playerSender: Player, quantity: Int) {
-        if(!playerSender.hasPermission("pickspawner.buy.pickaxe"))
-        {
+        if (!playerSender.hasPermission("pickspawner.buy.pickaxe")) {
             playerSender.sendMessage(instance.translationConfig.errors.missingPermission.toColorHex())
             return
         }
@@ -121,8 +120,7 @@ class BuyCommand(
     }
 
     private fun buyCustomPickaxeDurability(playerSender: Player, durability: Int) {
-        if(!playerSender.hasPermission("pickspawner.buy.durability"))
-        {
+        if (!playerSender.hasPermission("pickspawner.buy.durability")) {
             playerSender.sendMessage(instance.translationConfig.errors.missingPermission.toColorHex())
             return
         }
@@ -138,8 +136,7 @@ class BuyCommand(
         val damage = (itemMeta as Damageable).damage
         val totalDurability = (maxDurability - damage) + durability
 
-        if(durability <= 0)
-        {
+        if (durability <= 0) {
             playerSender.sendMessage(instance.translationConfig.errors.cancelBuyDurabilityBadDurability.toColorHex())
             return
         }
@@ -195,7 +192,12 @@ class BuyCommand(
         playerSender.inventory.removeItem(ItemStack(materialName, quantityToBuy))
         itemMeta.damage = damage - durability
         itemInMainHand.itemMeta = itemInitService.refreshDurabilityOnItemMetaLore(itemMeta, maxDurability.toInt())
-        playerSender.sendMessage(instance.translationConfig.buyCustomPickaxeDurability.replace("{{durability}}", durability.toString()).toColorHex())
+        playerSender.sendMessage(
+            instance.translationConfig.buyCustomPickaxeDurability.replace(
+                "{{durability}}",
+                durability.toString()
+            ).toColorHex()
+        )
     }
 
     private fun buyCustomPickaxeDurabilityOnMoneyEconomy(
@@ -220,7 +222,12 @@ class BuyCommand(
         if (withdrawPlayer.transactionSuccess()) {
             itemMeta.damage = damage - durability
             itemInMainHand.itemMeta = itemInitService.refreshDurabilityOnItemMetaLore(itemMeta, maxDurability.toInt())
-            playerSender.sendMessage(instance.translationConfig.buyCustomPickaxeDurability.replace("{{durability}}", durability.toString()).toColorHex())
+            playerSender.sendMessage(
+                instance.translationConfig.buyCustomPickaxeDurability.replace(
+                    "{{durability}}",
+                    durability.toString()
+                ).toColorHex()
+            )
         }
     }
 

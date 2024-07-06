@@ -19,9 +19,9 @@ typealias CommandName = String
 class CommandsRegistration(
     private val instance: PickSpawner,
     itemInitService: ItemInitService,
-    private val pickSpawnerBaseCommodore: LiteralArgumentBuilder<String>
+    baseCommand: String
 ) : CommandExecutor {
-
+    private val pickSpawnerBaseCommodore = LiteralArgumentBuilder.literal<String>(baseCommand)
     private val commands: MutableMap<CommandName, CommandInfoInit> = mutableMapOf()
 
     init {

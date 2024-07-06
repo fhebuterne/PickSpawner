@@ -11,12 +11,12 @@ import net.minecraft.world.level.block.Blocks
 import org.bukkit.Bukkit
 import java.lang.reflect.Field
 
-class Utils_1_20_R4 : Utils {
+class Utils_1_21_R1 : Utils {
 
     override fun setMaxStackSize(maxStack: Int) {
         try {
             /**
-             * DataComponents.c is maxStackSize, other var is default value for blocks, see [DataComponents.af]
+             * DataComponents.c is maxStackSize, other var is default value for blocks, see [DataComponents.ag]
               */
             val dataComponentsUpdated: DataComponentMap = DataComponentMap.a()
                 .a(DataComponents.c, maxStack)
