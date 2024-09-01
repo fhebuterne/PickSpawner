@@ -105,7 +105,7 @@ class PickSpawner : JavaPlugin() {
         pluginManager.registerEvents(PickaxeMigrationPlayerInteractEventListener(this, itemInitService), this)
         pluginManager.registerEvents(PlayerItemDamageListener(this, itemInitService), this)
         pluginManager.registerEvents(PlayerCommandPreprocessListener(this), this)
-        pluginManager.registerEvents(BlockPlaceEventListener(), this)
+        pluginManager.registerEvents(BlockPlaceEventListener(this), this)
     }
 
     private fun registerCommands(itemInitService: ItemInitService) {

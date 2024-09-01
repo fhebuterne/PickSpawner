@@ -3,17 +3,14 @@ package fr.fabienhebuterne.pickspawner.module.interactspawner
 import fr.fabienhebuterne.pickspawner.PickSpawner
 import fr.fabienhebuterne.pickspawner.config.TranslationConfig.Companion.toColorHex
 import fr.fabienhebuterne.pickspawner.module.CommonListener
-import fr.fabienhebuterne.pickspawner.module.ItemInitService
 import fr.fabienhebuterne.pickspawner.module.interactspawner.PlayerInteraction.entityTypeByPlayer
 import org.bukkit.Material
 import org.bukkit.block.CreatureSpawner
-import org.bukkit.entity.EntityType
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.meta.BlockStateMeta
-import java.util.*
 
 class PlayerInteractEventListener(
     private val instance: PickSpawner
@@ -36,8 +33,15 @@ class PlayerInteractEventListener(
             return
         }
 
-        val entityType = ((itemStack.itemMeta as BlockStateMeta).blockState as CreatureSpawner).spawnedType
-        entityTypeByPlayer[event.player.uniqueId] = entityType
+        try {
+            val entityType = ((itemStack.itemMeta as BlockStateMeta).blockState as CreatureSpawner).spawnedType
+            // ignore warn by idea intellij because entity can not have entityType sometimes
+            // despite the @NotNull annotation on spawnedType
+            @Suppress("SENSELESS_COMPARISON")
+            if (entityType != null) {
+                entityTypeByPlayer[event.player.uniqueId] = entityType
+            }
+        } catch (_: NullPointerException) { }
     }
 
     private fun cancelUpdateSpawnerWithEggs(event: PlayerInteractEvent) {

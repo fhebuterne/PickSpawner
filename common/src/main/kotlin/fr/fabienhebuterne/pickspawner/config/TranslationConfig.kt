@@ -1,8 +1,10 @@
 package fr.fabienhebuterne.pickspawner.config
 
+import fr.fabienhebuterne.pickspawner.config.TranslationConfig.Companion.toColorHex
 import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.entity.EntityType
+import java.util.UUID
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -16,8 +18,9 @@ data class TranslationConfig(
     val reloadEnded: String,
     val pickaxeHasBeenMigrated: String,
     val buyCustomPickaxe: String,
-    val buyCustomPickaxeDurability: String
+    val buyCustomPickaxeDurability: String,
 ) : ConfigType {
+
     fun getEntityOrDefault(entityType: EntityType): String {
         return entity.getOrDefault(entityType, entityType.name)
     }
@@ -83,5 +86,19 @@ data class ErrorConfig(
     val missingMoneyToBuy: String,
     val missingItemToBuy: String,
     val cancelBuyDurabilityMissingCustomPickaxeInMainHand: String,
-    val cancelBuyDurabilityExceedMaxDurability: String
-)
+    val cancelBuyDurabilityExceedMaxDurability: String,
+    val missingSpawnedTypeOnPlayer: String = "&8[&e&lPickSpawner&8] &cCan't place this spawner because missing spawnerType, contact an staff member",
+    val missingSpawnedTypeOnLogs: String = "&8[&e&lPickSpawner&8] &cPlayer with name {{playerPseudo}} and uuid {{playerUUID}} can't place spawner because missing spawnerType",
+) {
+
+    fun getMissingSpawnedTypeOnLogs(
+        playerPseudo: String,
+        playerUUID: UUID,
+    ): String {
+        return missingSpawnedTypeOnLogs
+            .replace("{{playerPseudo}}", playerPseudo)
+            .replace("{{playerUUID}}", playerUUID.toString())
+            .toColorHex()
+    }
+
+}
