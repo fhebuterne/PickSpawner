@@ -60,6 +60,8 @@ class PickSpawner : JavaPlugin() {
                     "1.20.6-R0.1-SNAPSHOT" -> Utils_1_20_R4()
                     "1.21-R0.1-SNAPSHOT" -> Utils_1_21_R1()
                     "1.21.1-R0.1-SNAPSHOT" -> Utils_1_21_R1()
+                    "1.21.3-R0.1-SNAPSHOT" -> Utils_1_21_R2()
+                    "1.21.4-R0.1-SNAPSHOT" -> Utils_1_21_R3()
                     else -> {
                         Bukkit.getLogger().severe("Your server version $currentVersion / $minecraftVersion isn't compatible with PickSpawner")
                         server.pluginManager.disablePlugin(this)
