@@ -29,6 +29,8 @@ dependencies {
     implementation(project(":nms:v1_21_R1"))
     implementation(project(":nms:v1_21_R2"))
     implementation(project(":nms:v1_21_R3"))
+    implementation(project(":nms:v1_21_R5"))
+    implementation(project(":nms:v1_21_R6"))
 }
 
 tasks.processResources {
