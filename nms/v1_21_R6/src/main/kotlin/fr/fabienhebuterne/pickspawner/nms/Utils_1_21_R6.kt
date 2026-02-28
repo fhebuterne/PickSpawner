@@ -20,11 +20,11 @@ class Utils_1_21_R6 : Utils {
               */
             val dataComponentsUpdated: DataComponentMap = DataComponentMap.a()
                 .a(DataComponents.c, maxStack)
-                .a(DataComponents.j, ItemLore.a)
-                .a(DataComponents.l, ItemEnchantments.a)
-                .a(DataComponents.r, 0)
-                .a(DataComponents.o, ItemAttributeModifiers.a)
-                .a(DataComponents.k, EnumItemRarity.a)
+                .a(DataComponents.m, ItemLore.a)
+                .a(DataComponents.o, ItemEnchantments.a)
+                .a(DataComponents.u, 0)
+                .a(DataComponents.r, ItemAttributeModifiers.a)
+                .a(DataComponents.n, EnumItemRarity.a)
                 .a()
             val dataComponentMapField: Field = Item::class.java.getDeclaredField("c")
             dataComponentMapField.isAccessible = true

@@ -26,7 +26,7 @@ versionsMd5=(
   '1.21.3:spigot-1.21.3-R0.1-SNAPSHOT.jar:72ff13989fe9de4b21c0a19a06c08f9b'
   '1.21.4:spigot-1.21.4-R0.1-SNAPSHOT.jar:5b19eb7363596253b49ecde141005689'
   '1.21.8:spigot-1.21.8-R0.1-SNAPSHOT.jar:fc568e7ac662f188ad7f18afb5713199'
-  '1.21.10:spigot-1.21.10-R0.1-SNAPSHOT.jar:1f58b9540396ae75663f24535649bb5c'
+  '1.21.11:spigot-1.21.11-R0.2-SNAPSHOT.jar:a457d82806ffba49cff1333f7409fa64'
 )
 
 for versionWithMd5 in "${versionsMd5[@]}"; do
